@@ -3,252 +3,939 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SHAMAN Foods — प्रतापगढ़</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>SHAMAN Foods — प्रतापगढ़, उत्तर प्रदेश | शुद्ध व ताज़ा</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --primary: #1b6b3a;
+      --primary-dark: #134e2a;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --bg: #f4f7f5;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --danger: #dc2626;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 90px; }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .brand h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: 0.3px; }
+    .brand p { font-size: 0.78rem; opacity: 0.9; margin-top: 2px; }
+    .top-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-top {
+      background: rgba(255,255,255,0.16);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-top.admin-btn { background: var(--accent); color: #111; border: none; }
+
+    /* Offer Ticker Banner */
+    .offer-strip {
+      background: linear-gradient(90deg, #b45309, #d97706);
+      color: #fff;
+      padding: 9px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .offer-strip button {
+      background: #fff;
+      color: #b45309;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 66px;
+      z-index: 90;
+    }
+    .nav-tab {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    .nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #f0fdf4; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 14px; }
+
+    /* Search & Categories */
+    .search-box {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+    .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+    .cat-btn {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--primary);
+      background: #fff;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.84rem;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .cat-btn.active { background: var(--primary); color: #fff; }
+
+    /* Product Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+    .card-img-wrap {
+      position: relative;
+      height: 165px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .card-img-wrap img, .card-img-wrap svg { width: 100%; height: 100%; object-fit: cover; }
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.95);
+      color: var(--primary-dark);
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .offer-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #dc2626;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+    .card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .card-title { font-size: 1.05rem; font-weight: 800; color: #111827; }
+    .card-desc { font-size: 0.83rem; color: var(--muted); margin: 5px 0 12px; line-height: 1.35; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px; }
+    .price { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
+    .old-price { font-size: 0.82rem; color: #9ca3af; text-decoration: line-through; margin-left: 5px; }
+    .add-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .qty-box { display: flex; align-items: center; gap: 8px; background: #ecfdf5; border: 1px solid var(--primary); border-radius: 8px; padding: 3px 6px; }
+    .qty-box button { background: var(--primary); color: #fff; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: 800; cursor: pointer; }
+    .qty-box span { font-weight: 800; min-width: 18px; text-align: center; }
+
+    /* Offers Page Cards */
+    .offer-card {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(245,158,11,0.12);
+    }
+    .offer-card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .offer-pill { background: #dc2626; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
+    .offer-card h3 { font-size: 1.12rem; color: #78350f; font-weight: 800; }
+    .offer-card p { font-size: 0.88rem; color: #92400e; margin: 6px 0 12px; line-height: 1.4; }
+
+    /* Floating Cart Bar */
+    .cart-bar {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      max-width: 600px;
+      background: var(--primary-dark);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      z-index: 120;
+      cursor: pointer;
+    }
+    .cart-bar.hidden { display: none; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    .modal.open { display: flex; align-items: flex-start; justify-content: center; }
+    .modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 520px;
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
+    .close-btn { background: #f3f4f6; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+
+    .form-group { margin-bottom: 11px; }
+    .form-group label { display: block; font-size: 0.83rem; font-weight: 700; margin-bottom: 4px; color: #374151; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.92rem;
+    }
+
+    /* Payment & QR Box */
+    .pay-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 12px 0;
+      text-align: center;
+    }
+    #dynamicQr { display: inline-block; padding: 10px; background: #fff; border-radius: 10px; border: 1px solid #d1d5db; margin: 8px 0; }
+    .upi-chip {
+      background: #fff;
+      border: 1px dashed var(--primary);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--primary-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .bank-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      text-align: left;
+      margin-top: 8px;
+      color: #334155;
+    }
+    .btn-wa {
+      width: 100%;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Admin Section */
+    .admin-section { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid var(--border); margin-bottom: 14px; }
+    .admin-section h3 { color: var(--primary-dark); margin-bottom: 10px; font-size: 1.05rem; border-bottom: 1px solid #eee; padding-bottom: 6px; }
+    .admin-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 8px;
+    }
+    .btn-sm { padding: 5px 10px; border-radius: 6px; border: none; font-weight: 700; font-size: 0.78rem; cursor: pointer; }
+    .btn-edit { background: #e0f2fe; color: #0369a1; }
+    .btn-del { background: #fee2e2; color: #b91c1c; }
+    .btn-save { background: var(--primary); color: #fff; padding: 10px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 6px; }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 pb-24">
+<body>
 
-  <header class="sticky top-0 z-30 bg-green-700 text-white shadow">
-    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-extrabold">🌿 SHAMAN Foods</h1>
-        <p class="text-xs text-green-100">प्रतापगढ़, उत्तर प्रदेश • शुद्ध व ताज़ा</p>
-      </div>
-      <div class="flex gap-2">
-        <button onclick="openQR()" class="bg-white/20 px-2.5 py-1.5 rounded-lg text-xs font-bold">QR</button>
-        <button onclick="shareApp()" class="bg-white/20 px-2.5 py-1.5 rounded-lg text-xs font-bold">शेयर</button>
-        <button onclick="toggleLang()" id="langBtn" class="bg-amber-400 text-slate-900 px-2.5 py-1.5 rounded-lg text-xs font-extrabold">EN</button>
-      </div>
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <h1>🌿 SHAMAN Foods</h1>
+      <p>81 अजीत नगर, प्रतापगढ़ (उ.प्र.) • शुद्ध, घर जैसा ताज़ा स्वाद</p>
     </div>
-    <div class="max-w-xl mx-auto px-4 pb-3 space-y-2">
-      <input id="q" type="text" oninput="render()" placeholder="उत्पाद खोजें (थाली, टोफू, आंवला)..." class="w-full px-3 py-2 rounded-xl text-sm text-slate-900 bg-white" />
-      <div id="cats" class="flex gap-2 overflow-x-auto"></div>
-    </div>
-  </header>
-
-  <main class="max-w-xl mx-auto px-4 pt-3">
-    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
-  </main>
-
-  <div id="bar" class="fixed bottom-0 inset-x-0 bg-white border-t shadow-lg p-3 hidden z-30">
-    <div class="max-w-xl mx-auto flex items-center justify-between">
-      <div>
-        <p class="text-xs text-slate-500"><span id="cnt">0</span> आइटम</p>
-        <p class="text-lg font-extrabold text-green-700">₹<span id="tot">0</span></p>
-      </div>
-      <button onclick="openCart()" class="bg-green-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm">कार्ट देखें →</button>
+    <div class="top-actions">
+      <button class="btn-top" onclick="openPayModal()">💳 पेमेंट / QR</button>
+      <button class="btn-top" onclick="shareSite()">📤 शेयर</button>
+      <button class="btn-top admin-btn" onclick="switchTab('admin')">⚙️ एडमिन</button>
     </div>
   </div>
+</header>
 
-  <div id="cartModal" class="fixed inset-0 bg-black/60 hidden z-40 flex items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl p-4 space-y-3">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h2 class="font-extrabold text-base">आपका ऑर्डर</h2>
-        <button onclick="closeCart()" class="text-lg font-bold px-2">✕</button>
-      </div>
-      <div id="cartList" class="space-y-2"></div>
-      <div class="bg-slate-50 p-3 rounded-xl border text-sm space-y-1">
-        <div class="flex justify-between"><span>कुल सामान</span><b>₹<span id="subAmt">0</span></b></div>
-        <div class="flex justify-between text-slate-600"><span>डिलीवरी चार्ज</span><span>₹0</span></div>
-        <div class="flex justify-between font-extrabold text-green-700 text-base border-t pt-1"><span>कुल देय</span><span>₹<span id="finalAmt">0</span></span></div>
-      </div>
-      <input id="cname" type="text" placeholder="पूरा नाम *" class="w-full border rounded-xl px-3 py-2 text-sm" />
-      <input id="cphone" type="tel" maxlength="10" placeholder="मोबाइल नंबर *" class="w-full border rounded-xl px-3 py-2 text-sm" />
-      <textarea id="caddr" rows="2" placeholder="पूरा पता (प्रतापगढ़) *" class="w-full border rounded-xl px-3 py-2 text-sm"></textarea>
-      <div class="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl p-2">
-        <span id="gpsTxt" class="text-xs text-blue-900">वैकल्पिक: GPS लोकेशन</span>
-        <button type="button" onclick="getGPS()" class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">📍 लोकेशन</button>
-      </div>
-      <input id="cnote" type="text" placeholder="विशेष निर्देश (वैकल्पिक)" class="w-full border rounded-xl px-3 py-2 text-sm" />
-      <button onclick="sendWA()" class="w-full bg-green-600 text-white font-extrabold py-3 rounded-xl">📲 WhatsApp पर ऑर्डर भेजें</button>
+<div class="offer-strip">
+  <span id="topBannerText">🎉 विशेष ऑफर: ₹10 में स्वाद चखें (ट्रायल पैक) + ₹250 से ऊपर के ऑर्डर पर फ्री होम डिलीवरी!</span>
+  <button onclick="switchTab('offers')">सभी ऑफर देखें</button>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" id="tab-menu" onclick="switchTab('menu')">🍽️ मेनू / उत्पाद</button>
+  <button class="nav-tab" id="tab-offers" onclick="switchTab('offers')">🎁 खास ऑफर</button>
+  <button class="nav-tab" id="tab-pay" onclick="switchTab('pay')">📲 पेमेंट व खाता</button>
+  <button class="nav-tab" id="tab-admin" onclick="switchTab('admin')">🔐 एडमिन पैनल</button>
+</div>
+
+<!-- TAB 1: MENU -->
+<div class="container" id="view-menu">
+  <input type="text" class="search-box" id="searchInput" placeholder="उत्पाद खोजें (सादा थाली, स्पेशल थाली, आंवला, सोया टोफू)..." oninput="renderMenu()" />
+  <div class="cats" id="catBar">
+    <button class="cat-btn active" onclick="setCat('सभी', this)">सभी</button>
+    <button class="cat-btn" onclick="setCat('थाली', this)">थाली</button>
+    <button class="cat-btn" onclick="setCat('आंवला', this)">आंवला</button>
+    <button class="cat-btn" onclick="setCat('सोया टोफू', this)">सोया टोफू</button>
+    <button class="cat-btn" onclick="setCat('ट्रायल', this)">₹10 ट्रायल</button>
+  </div>
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- TAB 2: OFFERS PAGE -->
+<div class="container" id="view-offers" style="display:none;">
+  <h2 style="margin-bottom:12px; color:var(--primary-dark);">🎁 SHAMAN Foods — आज के धमाकेदार ऑफर</h2>
+  <div id="offersList"></div>
+</div>
+
+<!-- TAB 3: PAYMENT & ACCOUNT DETAILS -->
+<div class="container" id="view-pay" style="display:none;">
+  <div class="admin-section" style="text-align:center;">
+    <h3>📲 सीधा पेमेंट करें (Scan & Pay)</h3>
+    <p style="font-size:0.86rem; color:var(--muted); margin-bottom:10px;">किसी भी UPI ऐप (PhonePe, Google Pay, Paytm, BHIM) से नीचे दिया QR कोड स्कैन करें</p>
+    <div id="standaloneQr" style="display:inline-block; padding:12px; background:#fff; border:1px solid #ddd; border-radius:12px;"></div>
+    <div class="upi-chip" style="max-width:380px; margin:12px auto;">
+      <span>UPI ID: <strong id="displayUpi1">9718266300@ptsbi</strong></span>
+      <button class="btn-sm btn-edit" onclick="copyText(STORE.upi)">कॉपी करें</button>
+    </div>
+    <div class="bank-box" style="max-width:380px; margin:12px auto;">
+      <strong>🏦 बैंक अकाउंट विवरण (NEFT / IMPS / UPI):</strong><br/>
+      <span id="displayBank1">खाता धारक: SHAMAN Foods | बैंक: State Bank of India (SBI) | खाते की जानकारी एडमिन पैनल से अपडेट करें</span>
     </div>
   </div>
+</div>
 
-  <div id="qrModal" class="fixed inset-0 bg-black/60 hidden z-40 flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-xs rounded-2xl p-4 text-center space-y-3">
-      <div class="flex justify-between items-center border-b pb-2">
-        <b class="text-green-700 text-sm">SHAMAN Foods QR</b>
-        <button onclick="closeQR()" class="font-bold">✕</button>
-      </div>
-      <div id="qrBox" class="flex justify-center p-2 border rounded-xl w-fit mx-auto"></div>
-      <p id="urlTxt" class="text-xs text-slate-500 break-all bg-slate-100 p-2 rounded"></p>
-      <button onclick="copyUrl()" class="w-full bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl">लिंक कॉपी करें</button>
+<!-- TAB 4: ADMIN PANEL -->
+<div class="container" id="view-admin" style="display:none;">
+  <div id="adminLock" class="admin-section" style="max-width:400px; margin:20px auto; text-align:center;">
+    <h3>🔐 एडमिन लॉगिन (Admin Panel)</h3>
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;">दाम, ऑफर, फ़ोटो और पेमेंट QR बदलने के लिए पिन डालें (डिफ़ॉल्ट पिन: <strong>1234</strong>)</p>
+    <div class="form-group">
+      <input type="password" id="adminPinInput" placeholder="एडमिन पिन दर्ज करें (1234)" style="text-align:center; font-size:1.1rem;" />
     </div>
+    <button class="btn-save" onclick="unlockAdmin()">एडमिन पैनल खोलें</button>
   </div>
 
-  <footer class="max-w-xl mx-auto px-4 pt-6 text-center text-xs text-slate-500">
-    <p class="font-bold text-slate-700">SHAMAN Foods — Pratapgarh, UP</p>
-    <p>WhatsApp: +91 7379551919</p>
-  </footer>
+  <div id="adminDashboard" style="display:none;">
+    <div class="admin-section">
+      <h3>💳 पेमेंट, UPI ID, बैंक अकाउंट व WhatsApp सेटिंग</h3>
+      <div class="form-group">
+        <label>WhatsApp ऑर्डर नंबर (बिना + के, जैसे 919718266300)</label>
+        <input type="text" id="admWa" />
+      </div>
+      <div class="form-group">
+        <label>पेमेंट रिसीव करने की UPI ID (जिसका QR कोड बनेगा)</label>
+        <input type="text" id="admUpi" placeholder="जैसे: 9718266300@ybl या नाम@okaxis" />
+      </div>
+      <div class="form-group">
+        <label>बैंक अकाउंट विवरण (खाता नाम, बैंक, IFSC/अकाउंट नंबर)</label>
+        <textarea id="admBank" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label>ऊपर चलने वाला ऑफर बैनर संदेश</label>
+        <input type="text" id="admBanner" />
+      </div>
+      <div class="form-group">
+        <label>नया एडमिन पिन (बदलना चाहें तो)</label>
+        <input type="text" id="admPin" />
+      </div>
+      <button class="btn-save" onclick="saveStoreSettings()">✅ सेटिंग्स सेव करें</button>
+    </div>
 
-  <script>
-    const WA = "917379551919";
-    let lang = "hi", cat = "ALL", cart = {}, gps = "";
+    <div class="admin-section">
+      <h3>🎁 नया ऑफर जोड़ें / ऑफर प्रबंधित करें</h3>
+      <div class="form-group">
+        <label>ऑफर का शीर्षक</label>
+        <input type="text" id="offTitle" placeholder="जैसे: स्पेशल थाली + आंवला मुरब्बा कॉम्बो" />
+      </div>
+      <div class="form-group">
+        <label>ऑफर का विवरण</label>
+        <input type="text" id="offDesc" placeholder="जैसे: ₹170 की जगह सिर्फ ₹149 में घर बैठे पाएं" />
+      </div>
+      <div class="form-group">
+        <label>ऑफर की कीमत (₹)</label>
+        <input type="number" id="offPrice" placeholder="149" />
+      </div>
+      <button class="btn-save" onclick="addNewOffer()">+ नया ऑफर जोड़ें</button>
+      <div id="adminOfferList" style="margin-top:12px;"></div>
+    </div>
 
-    const ITEMS = [
-      { id: "m1", c: "MEALS", icon: "🍛", bg: "bg-orange-600", hi: "सादा थाली", en: "Plain Thali", s: "1 थाली", p: 80, d: "रोटी, दाल, सब्जी, चावल, सलाद, अचार" },
-      { id: "m2", c: "MEALS", icon: "🍱", bg: "bg-red-700", hi: "स्पेशल थाली", en: "Special Thali", s: "1 थाली", p: 120, d: "स्पेशल सब्जी, टोफू/पनीर, दाल, रोटी, चावल, मिठाई" },
-      { id: "a1", c: "AMLA", icon: "🍯", bg: "bg-green-700", hi: "आंवला मुरब्बा", en: "Amla Murabba", s: "200 g", p: 50, d: "प्रतापगढ़ आंवले का पारंपरिक मुरब्बा" },
-      { id: "a2", c: "AMLA", icon: "🔶", bg: "bg-amber-600", hi: "आंवला बर्फी", en: "Amla Barfi", s: "200 g", p: 90, d: "स्वादिष्ट घर की बनी आंवला बर्फी" },
-      { id: "a3", c: "AMLA", icon: "🟡", bg: "bg-yellow-600", hi: "आंवला लड्डू", en: "Amla Laddu", s: "200 g", p: 75, d: "पौष्टिक और स्वादिष्ट आंवला लड्डू" },
-      { id: "a4", c: "AMLA", icon: "🍬", bg: "bg-lime-600", hi: "सादा आंवला कैंडी", en: "Plain Amla Candy", s: "200 g", p: 60, d: "मीठी और पाचक आंवला कैंडी" },
-      { id: "a5", c: "AMLA", icon: "🌶️", bg: "bg-orange-700", hi: "मसाला आंवला कैंडी", en: "Masala Amla Candy", s: "200 g", p: 75, d: "चटपटी मसालेदार आंवला कैंडी" },
-      { id: "s1", c: "SOY", icon: "🧈", bg: "bg-sky-700", hi: "सादा सोया टोफू", en: "Plain Soy Tofu", s: "200 g", p: 35, d: "ताज़ा, हाई-प्रोटीन शुद्ध सोया टोफू" },
-      { id: "s2", c: "SOY", icon: "🌿", bg: "bg-teal-700", hi: "मसाला सोया टोफू", en: "Masala Soy Tofu", s: "200 g", p: 40, d: "हल्के मसालों वाला ताज़ा सोया टोफू" },
-      { id: "t1", c: "TRIAL", icon: "🎁", bg: "bg-emerald-700", hi: "आंवला मुरब्बा (ट्रायल)", en: "Amla Murabba Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
-      { id: "t2", c: "TRIAL", icon: "🎁", bg: "bg-lime-700", hi: "सादा कैंडी (ट्रायल)", en: "Plain Candy Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
-      { id: "t3", c: "TRIAL", icon: "🎁", bg: "bg-orange-600", hi: "मसाला कैंडी (ट्रायल)", en: "Masala Candy Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
-      { id: "t4", c: "TRIAL", icon: "🎁", bg: "bg-amber-700", hi: "आंवला बर्फी (ट्रायल)", en: "Amla Barfi Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
-      { id: "t5", c: "TRIAL", icon: "🎁", bg: "bg-sky-600", hi: "सादा टोफू (ट्रायल)", en: "Plain Tofu Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
-      { id: "t6", c: "TRIAL", icon: "🎁", bg: "bg-teal-600", hi: "मसाला टोफू (ट्रायल)", en: "Masala Tofu Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" }
-    ];
+    <div class="admin-section">
+      <h3>🍽️ नया उत्पाद जोड़ें या मौजूदा उत्पाद बदलें</h3>
+      <input type="hidden" id="editProdIndex" value="-1" />
+      <div class="form-group">
+        <label>उत्पाद का नाम</label>
+        <input type="text" id="pName" placeholder="जैसे: शाही पनीर थाली" />
+      </div>
+      <div class="form-group">
+        <label>कैटेगरी</label>
+        <select id="pCat">
+          <option value="थाली">थाली</option>
+          <option value="आंवला">आंवला</option>
+          <option value="सोया टोफू">सोया टोफू</option>
+          <option value="ट्रायल">ट्रायल</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>मात्रा / पैक साइज (जैसे: 1 थाली, 200 g, 500 g)</label>
+        <input type="text" id="pUnit" placeholder="200 g" />
+      </div>
+      <div class="form-group">
+        <label>कीमत (₹)</label>
+        <input type="number" id="pPrice" placeholder="80" />
+      </div>
+      <div class="form-group">
+        <label>विवरण (क्या-क्या मिलेगा)</label>
+        <input type="text" id="pDesc" placeholder="रोटी, दाल, सब्जी, चावल, सलाद, अचार" />
+      </div>
+      <div class="form-group">
+        <label>फ़ोटो का प्रकार चुनें (या अपनी फ़ोटो का लिंक डालें)</label>
+        <select id="pImgType">
+          <option value="thali_sada">फ़ोटो: सादा घर जैसी थाली</option>
+          <option value="thali_special">फ़ोटो: स्पेशल शाही थाली</option>
+          <option value="amla_murabba">फ़ोटो: आंवला मुरब्बा जार</option>
+          <option value="amla_barfi">फ़ोटो: आंवला बर्फी</option>
+          <option value="amla_laddu">फ़ोटो: आंवला लड्डू</option>
+          <option value="amla_candy">फ़ोटो: आंवला कैंडी</option>
+          <option value="tofu_plain">फ़ोटो: ताज़ा सादा सोया टोफू</option>
+          <option value="tofu_masala">फ़ोटो: मसाला सोया टोफू</option>
+          <option value="trial_pack">फ़ोटो: ₹10 ट्रायल पैक</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>वैकल्पिक: अपनी असली फ़ोटो का URL (यदि हो तो)</label>
+        <input type="text" id="pCustomImg" placeholder="https://..." />
+      </div>
+      <button class="btn-save" id="saveProdBtn" onclick="saveProduct()">+ उत्पाद सेव करें</button>
+      <div id="adminProdList" style="margin-top:14px;"></div>
+    </div>
 
-    const CATS = [
-      { id: "ALL", hi: "सभी", en: "All" },
-      { id: "MEALS", hi: "थाली", en: "Meals" },
-      { id: "AMLA", hi: "आंवला", en: "Amla" },
-      { id: "SOY", hi: "सोया टोफू", en: "Tofu" },
-      { id: "TRIAL", hi: "₹10 ट्रायल", en: "Trial" }
-    ];
+    <div class="admin-section" style="background:#fefce8; border-color:#facc15;">
+      <h3>🌐 सभी ग्राहकों के लिए GitHub पर अपडेट करें</h3>
+      <p style="font-size:0.82rem; color:#713f12; margin-bottom:8px;">आपके किए गए बदलाव इस फ़ोन में तुरंत सेव हो गए हैं। अगर आप चाहते हैं कि यही बदलाव हर ग्राहक के फ़ोन पर दिखें, तो नीचे बटन दबाकर नया कोड कॉपी करें और GitHub की <code>index.html</code> फ़ाइल में पेस्ट कर दें।</p>
+      <button class="btn-save" style="background:#b45309;" onclick="exportUpdatedHtml()">📋 अपडेटेड पूरा कोड कॉपी करें (GitHub के लिए)</button>
+    </div>
+  </div>
+</div>
 
-    function toggleLang() {
-      lang = lang === "hi" ? "en" : "hi";
-      document.getElementById("langBtn").innerText = lang === "hi" ? "EN" : "हिंदी";
-      drawCats(); render();
-    }
+<!-- FLOATING CART BAR -->
+<div class="cart-bar hidden" id="cartBar" onclick="openCheckout()">
+  <div>
+    <strong id="cartCountText">0 आइटम</strong> • कुल: <strong id="cartTotalText">₹0</strong>
+  </div>
+  <div style="background:#fff; color:var(--primary-dark); padding:6px 12px; border-radius:8px; font-weight:800; font-size:0.85rem;">
+    ऑर्डर व पेमेंट करें →
+  </div>
+</div>
 
-    function drawCats() {
-      document.getElementById("cats").innerHTML = CATS.map(x =>
-        `<button onclick="cat='${x.id}';drawCats();render();" class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${cat===x.id?'bg-amber-400 text-slate-900':'bg-green-800 text-white'}">${lang==='hi'?x.hi:x.en}</button>`
-      ).join("");
-    }
+<!-- CHECKOUT & PAYMENT MODAL -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>🛒 आपका ऑर्डर और पेमेंट</h3>
+      <button class="close-btn" onclick="closeModal('checkoutModal')">✕</button>
+    </div>
+    <div id="checkoutItems" style="margin-bottom:12px; font-size:0.9rem;"></div>
+    <div style="background:#f8fafc; padding:10px; border-radius:8px; font-weight:800; display:flex; justify-content:space-between; margin-bottom:12px;">
+      <span>कुल देय राशि (Total):</span>
+      <span style="color:var(--primary); font-size:1.15rem;" id="modalTotal">₹0</span>
+    </div>
 
-    function render() {
-      const s = document.getElementById("q").value.toLowerCase().trim();
-      const list = ITEMS.filter(x => (cat==="ALL" || x.c===cat) && (!s || x.hi.toLowerCase().includes(s) || x.en.toLowerCase().includes(s)));
-      document.getElementById("grid").innerHTML = list.map(x => {
-        const q = cart[x.id] || 0;
-        const name = lang === "hi" ? x.hi : x.en;
-        return `<div class="bg-white rounded-2xl overflow-hidden border shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="h-28 ${x.bg} text-white flex flex-col items-center justify-center relative">
-              <span class="text-4xl">${x.icon}</span>
-              <span class="text-xs font-bold mt-1 opacity-95">${name}</span>
-              <span class="absolute top-2 right-2 bg-white text-slate-900 text-[11px] font-extrabold px-2 py-0.5 rounded-full">${x.s}</span>
+    <div class="form-group">
+      <label>आपका नाम *</label>
+      <input type="text" id="custName" placeholder="अपना पूरा नाम लिखें" />
+    </div>
+    <div class="form-group">
+      <label>मोबाइल नंबर *</label>
+      <input type="tel" id="custPhone" placeholder="10 अंकों का मोबाइल नंबर" />
+    </div>
+    <div class="form-group">
+      <label>डिलीवरी पता / मोहल्ला (प्रतापगढ़) *</label>
+      <input type="text" id="custAddr" placeholder="जैसे: अजीत नगर, चौक, प्रतापगढ़" />
+    </div>
+    <div class="form-group">
+      <label>भुगतान का तरीका चुनें (Payment Option)</label>
+      <select id="payMethod" onchange="togglePayBox()">
+        <option value="UPI / QR से ऑनलाइन पेमेंट">📲 UPI / QR कोड से अभी पेमेंट करें</option>
+        <option value="Cash on Delivery (नकद भुगतान)">💵 डिलीवरी पर नकद (Cash on Delivery)</option>
+      </select>
+    </div>
+
+    <div class="pay-box" id="checkoutPayBox">
+      <div style="font-weight:800; color:var(--primary-dark); font-size:0.92rem;">इस QR को स्कैन करके <span id="qrAmountLabel">₹0</span> का भुगतान करें</div>
+      <div id="dynamicQr"></div>
+      <div class="upi-chip">
+        <span>UPI: <strong id="checkoutUpiText">9718266300@ptsbi</strong></span>
+        <button class="btn-sm btn-edit" onclick="copyText(STORE.upi)">कॉपी</button>
+      </div>
+      <div class="bank-box" id="checkoutBankText"></div>
+      <div class="form-group" style="margin-top:10px; text-align:left;">
+        <label>पेमेंट करने के बाद UTR / Transaction ID (वैकल्पिक):</label>
+        <input type="text" id="utrInput" placeholder="जैसे: 432198765432 (या WhatsApp पर स्क्रीनशॉट भेजें)" />
+      </div>
+    </div>
+
+    <button class="btn-wa" onclick="sendWhatsAppOrder()">✅ WhatsApp पर ऑर्डर भेजें</button>
+  </div>
+</div>
+
+<script>
+  // Clear, high-contrast illustrative food artwork SVGs so every dish is immediately recognizable
+  const ARTWORKS = {
+    thali_sada: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#fef3c7"/><circle cx="200" cy="125" r="95" fill="#e2e8f0" stroke="#94a3b8" stroke-width="6"/><circle cx="200" cy="125" r="82" fill="#f8fafc"/><circle cx="155" cy="85" r="24" fill="#d97706"/><circle cx="155" cy="85" r="20" fill="#f59e0b"/><circle cx="215" cy="80" r="24" fill="#15803d"/><circle cx="215" cy="80" r="20" fill="#22c55e"/><circle cx="255" cy="115" r="20" fill="#dc2626"/><ellipse cx="165" cy="145" rx="36" ry="26" fill="#fde68a" stroke="#d97706" stroke-width="2"/><ellipse cx="228" cy="152" rx="30" ry="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><text x="200" y="228" text-anchor="middle" font-size="16" font-weight="800" fill="#78350f">घर जैसी शुद्ध सादा थाली</text></svg>`,
+    thali_special: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#fee2e2"/><circle cx="200" cy="122" r="98" fill="#fbbf24" stroke="#b45309" stroke-width="5"/><circle cx="200" cy="122" r="86" fill="#fffbeb"/><circle cx="145" cy="82" r="22" fill="#ea580c"/><circle cx="200" cy="72" r="22" fill="#16a34a"/><circle cx="255" cy="85" r="22" fill="#ca8a04"/><circle cx="262" cy="135" r="18" fill="#f43f5e"/><ellipse cx="155" cy="142" rx="38" ry="28" fill="#fcd34d" stroke="#b45309" stroke-width="2"/><ellipse cx="218" cy="152" rx="28" ry="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/><text x="200" y="228" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">स्पेशल शाही थाली (पनीर/टोफू + मिठाई)</text></svg>`,
+    amla_murabba: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#dcfce7"/><rect x="145" y="55" width="110" height="135" rx="18" fill="#fef08a" stroke="#ca8a04" stroke-width="5"/><rect x="155" y="38" width="90" height="20" rx="6" fill="#b45309"/><circle cx="182" cy="105" r="20" fill="#a16207"/><circle cx="218" cy="112" r="19" fill="#854d0e"/><circle cx="185" cy="148" r="21" fill="#ca8a04"/><circle cx="220" cy="152" r="18" fill="#a16207"/><text x="200" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#14532d">प्रतापगढ़ी आंवला मुरब्बा</text></svg>`,
+    amla_barfi: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#ffedd5"/><polygon points="200,45 265,105 200,165 135,105" fill="#f59e0b" stroke="#b45309" stroke-width="4"/><polygon points="200,60 250,105 200,150 150,105" fill="#fbbf24"/><circle cx="200" cy="105" r="8" fill="#15803d"/><text x="200" y="215" text-anchor="middle" font-size="16" font-weight="800" fill="#7c2d12">स्वादिष्ट आंवला बर्फी</text></svg>`,
+    amla_laddu: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#fef9c3"/><circle cx="155" cy="125" r="38" fill="#d97706" stroke="#92400e" stroke-width="3"/><circle cx="245" cy="125" r="38" fill="#b45309" stroke="#78350f" stroke-width="3"/><circle cx="200" cy="82" r="40" fill="#f59e0b" stroke="#b45309" stroke-width="3"/><circle cx="192" cy="74" r="5" fill="#fef3c7"/><circle cx="212" cy="86" r="4" fill="#fef3c7"/><text x="200" y="215" text-anchor="middle" font-size="16" font-weight="800" fill="#713f12">पौष्टिक आंवला लड्डू</text></svg>`,
+    amla_candy: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#ecfccb"/><rect x="135" y="75" width="130" height="75" rx="22" fill="#84cc16" stroke="#3f6212" stroke-width="4"/><polygon points="135,112 100,85 100,140" fill="#65a30d"/><polygon points="265,112 300,85 300,140" fill="#65a30d"/><text x="200" y="118" text-anchor="middle" font-size="18" font-weight="900" fill="#ffffff">AMLA CANDY</text><text x="200" y="215" text-anchor="middle" font-size="16" font-weight="800" fill="#365314">खट्टी-मीठी / मसाला आंवला कैंडी</text></svg>`,
+    tofu_plain: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#e0f2fe"/><ellipse cx="200" cy="155" rx="115" ry="32" fill="#bae6fd"/><rect x="125" y="75" width="85" height="65" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="3"/><rect x="195" y="90" width="85" height="65" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="3"/><text x="200" y="218" text-anchor="middle" font-size="16" font-weight="800" fill="#0c4a6e">ताज़ा हाई-प्रोटीन सोया टोफू</text></svg>`,
+    tofu_masala: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#ccfbf1"/><ellipse cx="200" cy="155" rx="115" ry="32" fill="#99f6e4"/><rect x="125" y="75" width="85" height="65" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><rect x="195" y="90" width="85" height="65" rx="10" fill="#fde68a" stroke="#b45309" stroke-width="3"/><circle cx="155" cy="102" r="4" fill="#dc2626"/><circle cx="178" cy="118" r="4" fill="#15803d"/><circle cx="230" cy="115" r="4" fill="#dc2626"/><circle cx="250" cy="130" r="4" fill="#15803d"/><text x="200" y="218" text-anchor="middle" font-size="16" font-weight="800" fill="#115e59">चटपटा मसाला सोया टोफू</text></svg>`,
+    trial_pack: `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="240" fill="#fef2f2"/><rect x="140" y="65" width="120" height="105" rx="14" fill="#ef4444" stroke="#991b1b" stroke-width="4"/><rect x="190" y="65" width="20" height="105" fill="#facc15"/><rect x="140" y="108" width="120" height="20" fill="#facc15"/><circle cx="200" cy="52" r="24" fill="#16a34a"/><text x="200" y="58" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">₹10</text><text x="200" y="215" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">₹10 स्वाद ट्रायल पैक</text></svg>`
+  };
+
+  const DEFAULT_DATA = {
+    wa: "919718266300",
+    upi: "9718266300@ptsbi",
+    bank: "खाता नाम: SHAMAN Foods | मोबाइल/UPI: 9718266300 | पता: 81 अजीत नगर, प्रतापगढ़",
+    banner: "🎉 विशेष ऑफर: ₹10 में स्वाद चखें (ट्रायल पैक) + ₹250 से ऊपर के ऑर्डर पर फ्री होम डिलीवरी!",
+    pin: "1234",
+    offers: [
+      { id: "off1", title: "🍛 स्पेशल थाली + आंवला मुरब्बा कॉम्बो", desc: "₹170 का पूरा कॉम्बो आज सिर्फ ₹149 में! घर जैसा ताज़ा खाना और प्रतापगढ़ी मुरब्बा।", price: 149, badge: "₹21 की बचत" },
+      { id: "off2", title: "🎁 4 ट्रायल पैक महा-बचत बॉक्स", desc: "मुरब्बा, सादा कैंडी, मसाला कैंडी और सोया टोफू चारों चखें सिर्फ ₹35 में।", price: 35, badge: "सबसे लोकप्रिय" },
+      { id: "off3", title: "💪 फिटनेस सोया टोफू पैक (400 ग्राम)", desc: "200g सादा टोफू + 200g मसाला टोफू एक साथ लें ₹75 की जगह ₹65 में।", price: 65, badge: "हाई प्रोटीन ऑफर" }
+    ],
+    products: [
+      { id: "p1", name: "सादा थाली", cat: "थाली", unit: "1 थाली", price: 80, desc: "रोटी, दाल, सब्जी, चावल, सलाद, अचार", imgType: "thali_sada", customImg: "" },
+      { id: "p2", name: "स्पेशल थाली", cat: "थाली", unit: "1 थाली", price: 120, desc: "स्पेशल सब्जी, टोफू/पनीर, दाल, रोटी, चावल, मिठाई", imgType: "thali_special", customImg: "" },
+      { id: "p3", name: "आंवला मुरब्बा", cat: "आंवला", unit: "200 g", price: 50, desc: "प्रतापगढ़ आंवले का पारंपरिक रसीला मुरब्बा", imgType: "amla_murabba", customImg: "" },
+      { id: "p4", name: "आंवला बर्फी", cat: "आंवला", unit: "200 g", price: 90, desc: "स्वादिष्ट और पौष्टिक घर की बनी आंवला बर्फी", imgType: "amla_barfi", customImg: "" },
+      { id: "p5", name: "आंवला लड्डू", cat: "आंवला", unit: "200 g", price: 75, desc: "पौष्टिक और स्वादिष्ट आंवला लड्डू", imgType: "amla_laddu", customImg: "" },
+      { id: "p6", name: "सादा आंवला कैंडी", cat: "आंवला", unit: "200 g", price: 60, desc: "मीठी और पाचक आंवला कैंडी", imgType: "amla_candy", customImg: "" },
+      { id: "p7", name: "मसाला आंवला कैंडी", cat: "आंवला", unit: "200 g", price: 75, desc: "चटपटी मसालेदार आंवला कैंडी", imgType: "amla_candy", customImg: "" },
+      { id: "p8", name: "सादा सोया टोफू", cat: "सोया टोफू", unit: "200 g", price: 35, desc: "ताज़ा, हाई-प्रोटीन शुद्ध सोया टोफू", imgType: "tofu_plain", customImg: "" },
+      { id: "p9", name: "मसाला सोया टोफू", cat: "सोया टोफू", unit: "200 g", price: 40, desc: "हल्के मसालों वाला ताज़ा सोया टोफू", imgType: "tofu_masala", customImg: "" },
+      { id: "p10", name: "आंवला मुरब्बा (ट्रायल)", cat: "ट्रायल", unit: "ट्रायल पैक", price: 10, desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", imgType: "trial_pack", customImg: "" },
+      { id: "p11", name: "सादा कैंडी (ट्रायल)", cat: "ट्रायल", unit: "ट्रायल पैक", price: 10, desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", imgType: "trial_pack", customImg: "" },
+      { id: "p12", name: "मसाला कैंडी (ट्रायल)", cat: "ट्रायल", unit: "ट्रायल पैक", price: 10, desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", imgType: "trial_pack", customImg: "" },
+      { id: "p13", name: "सादा टोफू (ट्रायल)", cat: "ट्रायल", unit: "ट्रायल पैक", price: 10, desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", imgType: "trial_pack", customImg: "" }
+    ]
+  };
+
+  let STORE = JSON.parse(localStorage.getItem("shaman_store_v2")) || JSON.parse(JSON.stringify(DEFAULT_DATA));
+  let CART = {};
+  let CURRENT_CAT = "सभी";
+
+  function persistStore() {
+    localStorage.setItem("shaman_store_v2", JSON.stringify(STORE));
+    refreshAllViews();
+  }
+
+  function refreshAllViews() {
+    document.getElementById("topBannerText").innerText = STORE.banner;
+    document.getElementById("displayUpi1").innerText = STORE.upi;
+    document.getElementById("displayBank1").innerText = STORE.bank;
+    document.getElementById("checkoutUpiText").innerText = STORE.upi;
+    document.getElementById("checkoutBankText").innerText = STORE.bank;
+    renderMenu();
+    renderOffers();
+    renderStandaloneQr();
+    updateCartBar();
+  }
+
+  function switchTab(tab) {
+    ["menu", "offers", "pay", "admin"].forEach(t => {
+      document.getElementById("view-" + t).style.display = (t === tab) ? "block" : "none";
+      document.getElementById("tab-" + t).classList.toggle("active", t === tab);
+    });
+    if (tab === "pay") renderStandaloneQr();
+  }
+
+  function setCat(cat, btn) {
+    CURRENT_CAT = cat;
+    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderMenu();
+  }
+
+  function renderMenu() {
+    const q = document.getElementById("searchInput").value.toLowerCase().trim();
+    const grid = document.getElementById("productGrid");
+    const filtered = STORE.products.filter(p => {
+      const matchCat = (CURRENT_CAT === "सभी") || (p.cat === CURRENT_CAT);
+      const matchQ = p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+      return matchCat && matchQ;
+    });
+
+    grid.innerHTML = filtered.map(p => {
+      const qty = CART[p.id] ? CART[p.id].qty : 0;
+      const visual = p.customImg ? `<img src="${p.customImg}" alt="${p.name}">` : (ARTWORKS[p.imgType] || ARTWORKS.thali_sada);
+      return `
+        <div class="card">
+          <div class="card-img-wrap">
+            ${visual}
+            <span class="badge">${p.unit}</span>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-title">${p.name}</div>
+              <div class="card-desc">${p.desc}</div>
             </div>
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-slate-900">${name}</h3>
-              <p class="text-xs text-slate-500 mt-0.5">${x.d}</p>
+            <div class="card-footer">
+              <div class="price">₹${p.price}</div>
+              ${qty === 0
+                ? `<button class="add-btn" onclick="changeQty('${p.id}', '${p.name}', ${p.price}, 1)">+ जोड़ें</button>`
+                : `<div class="qty-box">
+                     <button onclick="changeQty('${p.id}', '${p.name}', ${p.price}, -1)">-</button>
+                     <span>${qty}</span>
+                     <button onclick="changeQty('${p.id}', '${p.name}', ${p.price}, 1)">+</button>
+                   </div>`
+              }
             </div>
           </div>
-          <div class="px-3 pb-3 pt-2 border-t flex items-center justify-between">
-            <span class="font-extrabold text-green-700 text-base">₹${x.p}</span>
-            ${q===0 ? `<button onclick="chg('${x.id}',1)" class="bg-green-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl">+ जोड़ें</button>` :
-              `<div class="flex items-center gap-2 bg-green-50 border border-green-300 rounded-xl px-2 py-0.5">
-                <button onclick="chg('${x.id}',-1)" class="font-extrabold text-green-700 px-1">−</button>
-                <span class="text-xs font-bold">${q}</span>
-                <button onclick="chg('${x.id}',1)" class="font-extrabold text-green-700 px-1">+</button>
-              </div>`}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderOffers() {
+    const box = document.getElementById("offersList");
+    box.innerHTML = STORE.offers.map(o => {
+      const qty = CART[o.id] ? CART[o.id].qty : 0;
+      return `
+        <div class="offer-card">
+          <div class="offer-card-head">
+            <h3>${o.title}</h3>
+            <span class="offer-pill">${o.badge || "स्पेशल ऑफर"}</span>
           </div>
-        </div>`;
-      }).join("");
-      updateBar();
-    }
-
-    function chg(id, d) {
-      const n = (cart[id] || 0) + d;
-      if (n <= 0) delete cart[id]; else cart[id] = n;
-      render();
-      if (!document.getElementById("cartModal").classList.contains("hidden")) drawCart();
-    }
-
-    function totals() {
-      let c = 0, a = 0;
-      for (const [id, q] of Object.entries(cart)) {
-        const it = ITEMS.find(x => x.id === id);
-        if (it) { c += q; a += it.p * q; }
-      }
-      return { c, a };
-    }
-
-    function updateBar() {
-      const { c, a } = totals();
-      const b = document.getElementById("bar");
-      if (c > 0) { b.classList.remove("hidden"); document.getElementById("cnt").innerText = c; document.getElementById("tot").innerText = a; }
-      else { b.classList.add("hidden"); closeCart(); }
-    }
-
-    function openCart() { drawCart(); document.getElementById("cartModal").classList.remove("hidden"); }
-    function closeCart() { document.getElementById("cartModal").classList.add("hidden"); }
-
-    function drawCart() {
-      document.getElementById("cartList").innerHTML = Object.entries(cart).map(([id, q]) => {
-        const it = ITEMS.find(x => x.id === id);
-        return `<div class="flex justify-between items-center bg-slate-50 p-2 rounded-xl border text-sm">
-          <div><b>${it.hi}</b> <span class="text-xs text-slate-500">(${it.s})</span><br><span class="text-xs">₹${it.p} × ${q} = <b>₹${it.p*q}</b></span></div>
-          <div class="flex items-center gap-2">
-            <button onclick="chg('${id}',-1)" class="px-2 py-0.5 bg-white border rounded font-bold">−</button>
-            <b>${q}</b>
-            <button onclick="chg('${id}',1)" class="px-2 py-0.5 bg-green-700 text-white rounded font-bold">+</button>
+          <p>${o.desc}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:1.25rem; font-weight:900; color:#b45309;">ऑफर मूल्य: ₹${o.price}</span>
+            ${qty === 0
+              ? `<button class="add-btn" style="background:#b45309;" onclick="changeQty('${o.id}', '${o.title}', ${o.price}, 1)">+ ऑफर जोड़ें</button>`
+              : `<div class="qty-box">
+                   <button onclick="changeQty('${o.id}', '${o.title}', ${o.price}, -1)">-</button>
+                   <span>${qty}</span>
+                   <button onclick="changeQty('${o.id}', '${o.title}', ${o.price}, 1)">+</button>
+                 </div>`
+            }
           </div>
-        </div>`;
-      }).join("");
-      const { a } = totals();
-      document.getElementById("subAmt").innerText = a;
-      document.getElementById("finalAmt").innerText = a;
+        </div>
+      `;
+    }).join("");
+  }
+
+  function changeQty(id, name, price, delta) {
+    if (!CART[id]) CART[id] = { name, price, qty: 0 };
+    CART[id].qty += delta;
+    if (CART[id].qty <= 0) delete CART[id];
+    renderMenu();
+    renderOffers();
+    updateCartBar();
+  }
+
+  function getCartSummary() {
+    let count = 0, total = 0;
+    Object.values(CART).forEach(item => {
+      count += item.qty;
+      total += item.price * item.qty;
+    });
+    return { count, total };
+  }
+
+  function updateCartBar() {
+    const { count, total } = getCartSummary();
+    const bar = document.getElementById("cartBar");
+    if (count === 0) {
+      bar.classList.add("hidden");
+    } else {
+      bar.classList.remove("hidden");
+      document.getElementById("cartCountText").innerText = `${count} आइटम`;
+      document.getElementById("cartTotalText").innerText = `₹${total}`;
+    }
+  }
+
+  function renderStandaloneQr() {
+    const el = document.getElementById("standaloneQr");
+    el.innerHTML = "";
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(STORE.upi)}&pn=${encodeURIComponent("SHAMAN Foods")}&cu=INR`;
+    new QRCode(el, { text: upiUrl, width: 170, height: 170 });
+  }
+
+  function openPayModal() {
+    switchTab('pay');
+  }
+
+  function openCheckout() {
+    const { count, total } = getCartSummary();
+    if (count === 0) return;
+    const list = Object.values(CART).map(i => `• ${i.name} × ${i.qty} = <strong>₹${i.price * i.qty}</strong>`).join("<br/>");
+    document.getElementById("checkoutItems").innerHTML = list;
+    document.getElementById("modalTotal").innerText = `₹${total}`;
+    document.getElementById("qrAmountLabel").innerText = `₹${total}`;
+
+    const qrBox = document.getElementById("dynamicQr");
+    qrBox.innerHTML = "";
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(STORE.upi)}&pn=${encodeURIComponent("SHAMAN Foods")}&am=${total}&cu=INR`;
+    new QRCode(qrBox, { text: upiUrl, width: 155, height: 155 });
+
+    document.getElementById("checkoutModal").classList.add("open");
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove("open");
+  }
+
+  function togglePayBox() {
+    const val = document.getElementById("payMethod").value;
+    document.getElementById("checkoutPayBox").style.display = val.includes("UPI") ? "block" : "none";
+  }
+
+  function sendWhatsAppOrder() {
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const addr = document.getElementById("custAddr").value.trim();
+    const pay = document.getElementById("payMethod").value;
+    const utr = document.getElementById("utrInput").value.trim();
+
+    if (!name || !phone || !addr) {
+      alert("कृपया अपना नाम, मोबाइल नंबर और पूरा पता ज़रूर भरें।");
+      return;
     }
 
-    function getGPS() {
-      const el = document.getElementById("gpsTxt");
-      if (!navigator.geolocation) { el.innerText = "GPS उपलब्ध नहीं"; return; }
-      el.innerText = "लोकेशन ली जा रही है...";
-      navigator.geolocation.getCurrentPosition(p => {
-        gps = `https://maps.google.com/?q=${p.coords.latitude.toFixed(6)},${p.coords.longitude.toFixed(6)}`;
-        el.innerText = "✅ लोकेशन जुड़ गई";
-      }, () => { el.innerText = "अनुमति नहीं मिली, पता लिखें"; });
-    }
+    const { total } = getCartSummary();
+    let lines = Object.values(CART).map(i => `- ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join("\n");
+    let msg = `🌿 *नया ऑर्डर — SHAMAN Foods*\n`;
+    msg += `------------------------\n`;
+    msg += `*ग्राहक:* ${name}\n`;
+    msg += `*मोबाइल:* ${phone}\n`;
+    msg += `*पता:* ${addr}\n`;
+    msg += `------------------------\n`;
+    msg += `${lines}\n`;
+    msg += `------------------------\n`;
+    msg += `*कुल राशि:* ₹${total}\n`;
+    msg += `*भुगतान तरीका:* ${pay}\n`;
+    if (utr) msg += `*UTR / Transaction ID:* ${utr}\n`;
 
-    function sendWA() {
-      const name = document.getElementById("cname").value.trim();
-      const phone = document.getElementById("cphone").value.trim();
-      const addr = document.getElementById("caddr").value.trim();
-      const note = document.getElementById("cnote").value.trim();
-      if (!name || !phone || !addr) { alert("कृपया नाम, मोबाइल और पता भरें।"); return; }
-      const { a } = totals();
-      if (a <= 0) return;
-      const oid = "SHM-" + Math.floor(1000 + Math.random() * 9000);
-      let lines = "", i = 1;
-      for (const [id, q] of Object.entries(cart)) {
-        const it = ITEMS.find(x => x.id === id);
-        lines += `${i++}. ${it.hi} (${it.s}) - ${q} × ₹${it.p} = ₹${it.p*q}\n`;
-      }
-      let msg = `*🌿 नया ऑर्डर — SHAMAN Foods*\n*ऑर्डर ID:* ${oid}\n*नाम:* ${name}\n*मोबाइल:* ${phone}\n*पता:* ${addr}\n`;
-      if (gps) msg += `*GPS:* ${gps}\n`;
-      if (note) msg += `*निर्देश:* ${note}\n`;
-      msg += `----------------\n${lines}----------------\n*कुल देय: ₹${a}*`;
-      window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
-    }
+    window.open(`https://wa.me/${STORE.wa}?text=${encodeURIComponent(msg)}`, "_blank");
+  }
 
-    let qrMade = false;
-    function openQR() {
-      document.getElementById("qrModal").classList.remove("hidden");
-      document.getElementById("urlTxt").innerText = window.location.href;
-      if (!qrMade) {
-        document.getElementById("qrBox").innerHTML = "";
-        new QRCode(document.getElementById("qrBox"), { text: window.location.href, width: 160, height: 160 });
-        qrMade = true;
-      }
-    }
-    function closeQR() { document.getElementById("qrModal").classList.add("hidden"); }
-    function copyUrl() { navigator.clipboard.writeText(window.location.href); alert("लिंक कॉपी हो गया!"); }
-    function shareApp() {
-      if (navigator.share) navigator.share({ title: "SHAMAN Foods", url: window.location.href }).catch(() => {});
-      else copyUrl();
-    }
+  function copyText(txt) {
+    navigator.clipboard.writeText(txt);
+    alert("कॉपी हो गया: " + txt);
+  }
 
-    drawCats(); render();
-  </script>
+  function shareSite() {
+    const url = window.location.href;
+    const text = `🌿 *SHAMAN Foods (प्रतापगढ़)* — घर जैसी शुद्ध थाली, आंवला उत्पाद व ताज़ा सोया टोफू ऑनलाइन ऑर्डर करें:\n${url}`;
+    if (navigator.share) {
+      navigator.share({ title: "SHAMAN Foods", text, url });
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+  }
+
+  // ADMIN FUNCTIONS
+  function unlockAdmin() {
+    const entered = document.getElementById("adminPinInput").value.trim();
+    if (entered === STORE.pin) {
+      document.getElementById("adminLock").style.display = "none";
+      document.getElementById("adminDashboard").style.display = "block";
+      loadAdminFields();
+    } else {
+      alert("गलत पिन! डिफ़ॉल्ट पिन 1234 डालें।");
+    }
+  }
+
+  function loadAdminFields() {
+    document.getElementById("admWa").value = STORE.wa;
+    document.getElementById("admUpi").value = STORE.upi;
+    document.getElementById("admBank").value = STORE.bank;
+    document.getElementById("admBanner").value = STORE.banner;
+    document.getElementById("admPin").value = STORE.pin;
+    renderAdminLists();
+  }
+
+  function saveStoreSettings() {
+    STORE.wa = document.getElementById("admWa").value.trim() || STORE.wa;
+    STORE.upi = document.getElementById("admUpi").value.trim() || STORE.upi;
+    STORE.bank = document.getElementById("admBank").value.trim() || STORE.bank;
+    STORE.banner = document.getElementById("admBanner").value.trim() || STORE.banner;
+    STORE.pin = document.getElementById("admPin").value.trim() || STORE.pin;
+    persistStore();
+    alert("सेटिंग्स और पेमेंट QR अपडेट हो गए हैं!");
+  }
+
+  function addNewOffer() {
+    const title = document.getElementById("offTitle").value.trim();
+    const desc = document.getElementById("offDesc").value.trim();
+    const price = Number(document.getElementById("offPrice").value);
+    if (!title || !price) { alert("ऑफर का नाम और कीमत लिखें।"); return; }
+    STORE.offers.push({ id: "off_" + Date.now(), title, desc, price, badge: "नया ऑफर" });
+    document.getElementById("offTitle").value = "";
+    document.getElementById("offDesc").value = "";
+    document.getElementById("offPrice").value = "";
+    persistStore();
+    renderAdminLists();
+    alert("नया ऑफर जुड़ गया!");
+  }
+
+  function deleteOffer(idx) {
+    STORE.offers.splice(idx, 1);
+    persistStore();
+    renderAdminLists();
+  }
+
+  function saveProduct() {
+    const idx = Number(document.getElementById("editProdIndex").value);
+    const name = document.getElementById("pName").value.trim();
+    const cat = document.getElementById("pCat").value;
+    const unit = document.getElementById("pUnit").value.trim() || "1 पैक";
+    const price = Number(document.getElementById("pPrice").value);
+    const desc = document.getElementById("pDesc").value.trim();
+    const imgType = document.getElementById("pImgType").value;
+    const customImg = document.getElementById("pCustomImg").value.trim();
+
+    if (!name || !price) { alert("उत्पाद का नाम और कीमत भरें।"); return; }
+
+    const item = { id: idx >= 0 ? STORE.products[idx].id : "p_" + Date.now(), name, cat, unit, price, desc, imgType, customImg };
+    if (idx >= 0) STORE.products[idx] = item;
+    else STORE.products.push(item);
+
+    document.getElementById("editProdIndex").value = "-1";
+    document.getElementById("saveProdBtn").innerText = "+ उत्पाद सेव करें";
+    ["pName", "pUnit", "pPrice", "pDesc", "pCustomImg"].forEach(id => document.getElementById(id).value = "");
+    persistStore();
+    renderAdminLists();
+    alert("उत्पाद सेव हो गया!");
+  }
+
+  function editProduct(idx) {
+    const p = STORE.products[idx];
+    document.getElementById("editProdIndex").value = idx;
+    document.getElementById("pName").value = p.name;
+    document.getElementById("pCat").value = p.cat;
+    document.getElementById("pUnit").value = p.unit;
+    document.getElementById("pPrice").value = p.price;
+    document.getElementById("pDesc").value = p.desc;
+    document.getElementById("pImgType").value = p.imgType;
+    document.getElementById("pCustomImg").value = p.customImg || "";
+    document.getElementById("saveProdBtn").innerText = "✅ बदलाव अपडेट करें";
+    document.getElementById("pName").focus();
+  }
+
+  function deleteProduct(idx) {
+    if (confirm("क्या आप इस उत्पाद को हटाना चाहते हैं?")) {
+      STORE.products.splice(idx, 1);
+      persistStore();
+      renderAdminLists();
+    }
+  }
+
+  function renderAdminLists() {
+    document.getElementById("adminOfferList").innerHTML = STORE.offers.map((o, i) => `
+      <div class="admin-item-row">
+        <span><strong>${o.title}</strong> (₹${o.price})</span>
+        <button class="btn-sm btn-del" onclick="deleteOffer(${i})">हटाएं</button>
+      </div>
+    `).join("");
+
+    document.getElementById("adminProdList").innerHTML = STORE.products.map((p, i) => `
+      <div class="admin-item-row">
+        <span><strong>${p.name}</strong> — ₹${p.price} (${p.unit})</span>
+        <div>
+          <button class="btn-sm btn-edit" onclick="editProduct(${i})">बदलें</button>
+          <button class="btn-sm btn-del" onclick="deleteProduct(${i})">हटाएं</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function exportUpdatedHtml() {
+    const rawHtml = document.documentElement.outerHTML;
+    const updatedHtml = "<!DOCTYPE html>\n" + rawHtml.replace(
+      /const DEFAULT_DATA = \{[\s\S]*?\n  \};/,
+      `const DEFAULT_DATA = ${JSON.stringify(STORE, null, 2)};`
+    );
+    navigator.clipboard.writeText(updatedHtml).then(() => {
+      alert("पूरा अपडेटेड कोड कॉपी हो गया है! अब इसे GitHub की index.html फ़ाइल में पेस्ट करके Commit changes कर दें।");
+    });
+  }
+
+  refreshAllViews();
+</script>
 </body>
 </html>
-#8098ff
