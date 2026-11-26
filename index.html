@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHAMAN Foods — प्रतापगढ़</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-24">
+
+  <header class="sticky top-0 z-30 bg-green-700 text-white shadow">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-extrabold">🌿 SHAMAN Foods</h1>
+        <p class="text-xs text-green-100">प्रतापगढ़, उत्तर प्रदेश • शुद्ध व ताज़ा</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="openQR()" class="bg-white/20 px-2.5 py-1.5 rounded-lg text-xs font-bold">QR</button>
+        <button onclick="shareApp()" class="bg-white/20 px-2.5 py-1.5 rounded-lg text-xs font-bold">शेयर</button>
+        <button onclick="toggleLang()" id="langBtn" class="bg-amber-400 text-slate-900 px-2.5 py-1.5 rounded-lg text-xs font-extrabold">EN</button>
+      </div>
+    </div>
+    <div class="max-w-xl mx-auto px-4 pb-3 space-y-2">
+      <input id="q" type="text" oninput="render()" placeholder="उत्पाद खोजें (थाली, टोफू, आंवला)..." class="w-full px-3 py-2 rounded-xl text-sm text-slate-900 bg-white" />
+      <div id="cats" class="flex gap-2 overflow-x-auto"></div>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto px-4 pt-3">
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+  </main>
+
+  <div id="bar" class="fixed bottom-0 inset-x-0 bg-white border-t shadow-lg p-3 hidden z-30">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div>
+        <p class="text-xs text-slate-500"><span id="cnt">0</span> आइटम</p>
+        <p class="text-lg font-extrabold text-green-700">₹<span id="tot">0</span></p>
+      </div>
+      <button onclick="openCart()" class="bg-green-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm">कार्ट देखें →</button>
+    </div>
+  </div>
+
+  <div id="cartModal" class="fixed inset-0 bg-black/60 hidden z-40 flex items-end sm:items-center justify-center">
+    <div class="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl p-4 space-y-3">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h2 class="font-extrabold text-base">आपका ऑर्डर</h2>
+        <button onclick="closeCart()" class="text-lg font-bold px-2">✕</button>
+      </div>
+      <div id="cartList" class="space-y-2"></div>
+      <div class="bg-slate-50 p-3 rounded-xl border text-sm space-y-1">
+        <div class="flex justify-between"><span>कुल सामान</span><b>₹<span id="subAmt">0</span></b></div>
+        <div class="flex justify-between text-slate-600"><span>डिलीवरी चार्ज</span><span>₹0</span></div>
+        <div class="flex justify-between font-extrabold text-green-700 text-base border-t pt-1"><span>कुल देय</span><span>₹<span id="finalAmt">0</span></span></div>
+      </div>
+      <input id="cname" type="text" placeholder="पूरा नाम *" class="w-full border rounded-xl px-3 py-2 text-sm" />
+      <input id="cphone" type="tel" maxlength="10" placeholder="मोबाइल नंबर *" class="w-full border rounded-xl px-3 py-2 text-sm" />
+      <textarea id="caddr" rows="2" placeholder="पूरा पता (प्रतापगढ़) *" class="w-full border rounded-xl px-3 py-2 text-sm"></textarea>
+      <div class="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl p-2">
+        <span id="gpsTxt" class="text-xs text-blue-900">वैकल्पिक: GPS लोकेशन</span>
+        <button type="button" onclick="getGPS()" class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">📍 लोकेशन</button>
+      </div>
+      <input id="cnote" type="text" placeholder="विशेष निर्देश (वैकल्पिक)" class="w-full border rounded-xl px-3 py-2 text-sm" />
+      <button onclick="sendWA()" class="w-full bg-green-600 text-white font-extrabold py-3 rounded-xl">📲 WhatsApp पर ऑर्डर भेजें</button>
+    </div>
+  </div>
+
+  <div id="qrModal" class="fixed inset-0 bg-black/60 hidden z-40 flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-2xl p-4 text-center space-y-3">
+      <div class="flex justify-between items-center border-b pb-2">
+        <b class="text-green-700 text-sm">SHAMAN Foods QR</b>
+        <button onclick="closeQR()" class="font-bold">✕</button>
+      </div>
+      <div id="qrBox" class="flex justify-center p-2 border rounded-xl w-fit mx-auto"></div>
+      <p id="urlTxt" class="text-xs text-slate-500 break-all bg-slate-100 p-2 rounded"></p>
+      <button onclick="copyUrl()" class="w-full bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl">लिंक कॉपी करें</button>
+    </div>
+  </div>
+
+  <footer class="max-w-xl mx-auto px-4 pt-6 text-center text-xs text-slate-500">
+    <p class="font-bold text-slate-700">SHAMAN Foods — Pratapgarh, UP</p>
+    <p>WhatsApp: +91 7379551919</p>
+  </footer>
+
+  <script>
+    const WA = "917379551919";
+    let lang = "hi", cat = "ALL", cart = {}, gps = "";
+
+    const ITEMS = [
+      { id: "m1", c: "MEALS", icon: "🍛", bg: "bg-orange-600", hi: "सादा थाली", en: "Plain Thali", s: "1 थाली", p: 80, d: "रोटी, दाल, सब्जी, चावल, सलाद, अचार" },
+      { id: "m2", c: "MEALS", icon: "🍱", bg: "bg-red-700", hi: "स्पेशल थाली", en: "Special Thali", s: "1 थाली", p: 120, d: "स्पेशल सब्जी, टोफू/पनीर, दाल, रोटी, चावल, मिठाई" },
+      { id: "a1", c: "AMLA", icon: "🍯", bg: "bg-green-700", hi: "आंवला मुरब्बा", en: "Amla Murabba", s: "200 g", p: 50, d: "प्रतापगढ़ आंवले का पारंपरिक मुरब्बा" },
+      { id: "a2", c: "AMLA", icon: "🔶", bg: "bg-amber-600", hi: "आंवला बर्फी", en: "Amla Barfi", s: "200 g", p: 90, d: "स्वादिष्ट घर की बनी आंवला बर्फी" },
+      { id: "a3", c: "AMLA", icon: "🟡", bg: "bg-yellow-600", hi: "आंवला लड्डू", en: "Amla Laddu", s: "200 g", p: 75, d: "पौष्टिक और स्वादिष्ट आंवला लड्डू" },
+      { id: "a4", c: "AMLA", icon: "🍬", bg: "bg-lime-600", hi: "सादा आंवला कैंडी", en: "Plain Amla Candy", s: "200 g", p: 60, d: "मीठी और पाचक आंवला कैंडी" },
+      { id: "a5", c: "AMLA", icon: "🌶️", bg: "bg-orange-700", hi: "मसाला आंवला कैंडी", en: "Masala Amla Candy", s: "200 g", p: 75, d: "चटपटी मसालेदार आंवला कैंडी" },
+      { id: "s1", c: "SOY", icon: "🧈", bg: "bg-sky-700", hi: "सादा सोया टोफू", en: "Plain Soy Tofu", s: "200 g", p: 35, d: "ताज़ा, हाई-प्रोटीन शुद्ध सोया टोफू" },
+      { id: "s2", c: "SOY", icon: "🌿", bg: "bg-teal-700", hi: "मसाला सोया टोफू", en: "Masala Soy Tofu", s: "200 g", p: 40, d: "हल्के मसालों वाला ताज़ा सोया टोफू" },
+      { id: "t1", c: "TRIAL", icon: "🎁", bg: "bg-emerald-700", hi: "आंवला मुरब्बा (ट्रायल)", en: "Amla Murabba Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
+      { id: "t2", c: "TRIAL", icon: "🎁", bg: "bg-lime-700", hi: "सादा कैंडी (ट्रायल)", en: "Plain Candy Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
+      { id: "t3", c: "TRIAL", icon: "🎁", bg: "bg-orange-600", hi: "मसाला कैंडी (ट्रायल)", en: "Masala Candy Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
+      { id: "t4", c: "TRIAL", icon: "🎁", bg: "bg-amber-700", hi: "आंवला बर्फी (ट्रायल)", en: "Amla Barfi Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
+      { id: "t5", c: "TRIAL", icon: "🎁", bg: "bg-sky-600", hi: "सादा टोफू (ट्रायल)", en: "Plain Tofu Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" },
+      { id: "t6", c: "TRIAL", icon: "🎁", bg: "bg-teal-600", hi: "मसाला टोफू (ट्रायल)", en: "Masala Tofu Trial", s: "ट्रायल", p: 10, d: "स्वाद चखने के लिए ट्रायल पैक" }
+    ];
+
+    const CATS = [
+      { id: "ALL", hi: "सभी", en: "All" },
+      { id: "MEALS", hi: "थाली", en: "Meals" },
+      { id: "AMLA", hi: "आंवला", en: "Amla" },
+      { id: "SOY", hi: "सोया टोफू", en: "Tofu" },
+      { id: "TRIAL", hi: "₹10 ट्रायल", en: "Trial" }
+    ];
+
+    function toggleLang() {
+      lang = lang === "hi" ? "en" : "hi";
+      document.getElementById("langBtn").innerText = lang === "hi" ? "EN" : "हिंदी";
+      drawCats(); render();
+    }
+
+    function drawCats() {
+      document.getElementById("cats").innerHTML = CATS.map(x =>
+        `<button onclick="cat='${x.id}';drawCats();render();" class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${cat===x.id?'bg-amber-400 text-slate-900':'bg-green-800 text-white'}">${lang==='hi'?x.hi:x.en}</button>`
+      ).join("");
+    }
+
+    function render() {
+      const s = document.getElementById("q").value.toLowerCase().trim();
+      const list = ITEMS.filter(x => (cat==="ALL" || x.c===cat) && (!s || x.hi.toLowerCase().includes(s) || x.en.toLowerCase().includes(s)));
+      document.getElementById("grid").innerHTML = list.map(x => {
+        const q = cart[x.id] || 0;
+        const name = lang === "hi" ? x.hi : x.en;
+        return `<div class="bg-white rounded-2xl overflow-hidden border shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="h-28 ${x.bg} text-white flex flex-col items-center justify-center relative">
+              <span class="text-4xl">${x.icon}</span>
+              <span class="text-xs font-bold mt-1 opacity-95">${name}</span>
+              <span class="absolute top-2 right-2 bg-white text-slate-900 text-[11px] font-extrabold px-2 py-0.5 rounded-full">${x.s}</span>
+            </div>
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-slate-900">${name}</h3>
+              <p class="text-xs text-slate-500 mt-0.5">${x.d}</p>
+            </div>
+          </div>
+          <div class="px-3 pb-3 pt-2 border-t flex items-center justify-between">
+            <span class="font-extrabold text-green-700 text-base">₹${x.p}</span>
+            ${q===0 ? `<button onclick="chg('${x.id}',1)" class="bg-green-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl">+ जोड़ें</button>` :
+              `<div class="flex items-center gap-2 bg-green-50 border border-green-300 rounded-xl px-2 py-0.5">
+                <button onclick="chg('${x.id}',-1)" class="font-extrabold text-green-700 px-1">−</button>
+                <span class="text-xs font-bold">${q}</span>
+                <button onclick="chg('${x.id}',1)" class="font-extrabold text-green-700 px-1">+</button>
+              </div>`}
+          </div>
+        </div>`;
+      }).join("");
+      updateBar();
+    }
+
+    function chg(id, d) {
+      const n = (cart[id] || 0) + d;
+      if (n <= 0) delete cart[id]; else cart[id] = n;
+      render();
+      if (!document.getElementById("cartModal").classList.contains("hidden")) drawCart();
+    }
+
+    function totals() {
+      let c = 0, a = 0;
+      for (const [id, q] of Object.entries(cart)) {
+        const it = ITEMS.find(x => x.id === id);
+        if (it) { c += q; a += it.p * q; }
+      }
+      return { c, a };
+    }
+
+    function updateBar() {
+      const { c, a } = totals();
+      const b = document.getElementById("bar");
+      if (c > 0) { b.classList.remove("hidden"); document.getElementById("cnt").innerText = c; document.getElementById("tot").innerText = a; }
+      else { b.classList.add("hidden"); closeCart(); }
+    }
+
+    function openCart() { drawCart(); document.getElementById("cartModal").classList.remove("hidden"); }
+    function closeCart() { document.getElementById("cartModal").classList.add("hidden"); }
+
+    function drawCart() {
+      document.getElementById("cartList").innerHTML = Object.entries(cart).map(([id, q]) => {
+        const it = ITEMS.find(x => x.id === id);
+        return `<div class="flex justify-between items-center bg-slate-50 p-2 rounded-xl border text-sm">
+          <div><b>${it.hi}</b> <span class="text-xs text-slate-500">(${it.s})</span><br><span class="text-xs">₹${it.p} × ${q} = <b>₹${it.p*q}</b></span></div>
+          <div class="flex items-center gap-2">
+            <button onclick="chg('${id}',-1)" class="px-2 py-0.5 bg-white border rounded font-bold">−</button>
+            <b>${q}</b>
+            <button onclick="chg('${id}',1)" class="px-2 py-0.5 bg-green-700 text-white rounded font-bold">+</button>
+          </div>
+        </div>`;
+      }).join("");
+      const { a } = totals();
+      document.getElementById("subAmt").innerText = a;
+      document.getElementById("finalAmt").innerText = a;
+    }
+
+    function getGPS() {
+      const el = document.getElementById("gpsTxt");
+      if (!navigator.geolocation) { el.innerText = "GPS उपलब्ध नहीं"; return; }
+      el.innerText = "लोकेशन ली जा रही है...";
+      navigator.geolocation.getCurrentPosition(p => {
+        gps = `https://maps.google.com/?q=${p.coords.latitude.toFixed(6)},${p.coords.longitude.toFixed(6)}`;
+        el.innerText = "✅ लोकेशन जुड़ गई";
+      }, () => { el.innerText = "अनुमति नहीं मिली, पता लिखें"; });
+    }
+
+    function sendWA() {
+      const name = document.getElementById("cname").value.trim();
+      const phone = document.getElementById("cphone").value.trim();
+      const addr = document.getElementById("caddr").value.trim();
+      const note = document.getElementById("cnote").value.trim();
+      if (!name || !phone || !addr) { alert("कृपया नाम, मोबाइल और पता भरें।"); return; }
+      const { a } = totals();
+      if (a <= 0) return;
+      const oid = "SHM-" + Math.floor(1000 + Math.random() * 9000);
+      let lines = "", i = 1;
+      for (const [id, q] of Object.entries(cart)) {
+        const it = ITEMS.find(x => x.id === id);
+        lines += `${i++}. ${it.hi} (${it.s}) - ${q} × ₹${it.p} = ₹${it.p*q}\n`;
+      }
+      let msg = `*🌿 नया ऑर्डर — SHAMAN Foods*\n*ऑर्डर ID:* ${oid}\n*नाम:* ${name}\n*मोबाइल:* ${phone}\n*पता:* ${addr}\n`;
+      if (gps) msg += `*GPS:* ${gps}\n`;
+      if (note) msg += `*निर्देश:* ${note}\n`;
+      msg += `----------------\n${lines}----------------\n*कुल देय: ₹${a}*`;
+      window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    let qrMade = false;
+    function openQR() {
+      document.getElementById("qrModal").classList.remove("hidden");
+      document.getElementById("urlTxt").innerText = window.location.href;
+      if (!qrMade) {
+        document.getElementById("qrBox").innerHTML = "";
+        new QRCode(document.getElementById("qrBox"), { text: window.location.href, width: 160, height: 160 });
+        qrMade = true;
+      }
+    }
+    function closeQR() { document.getElementById("qrModal").classList.add("hidden"); }
+    function copyUrl() { navigator.clipboard.writeText(window.location.href); alert("लिंक कॉपी हो गया!"); }
+    function shareApp() {
+      if (navigator.share) navigator.share({ title: "SHAMAN Foods", url: window.location.href }).catch(() => {});
+      else copyUrl();
+    }
+
+    drawCats(); render();
+  </script>
+</body>
+</html>
+#8098ff
