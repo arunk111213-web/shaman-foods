@@ -1,174 +1,338 @@
-text-sm">
-            <option value="auto">तस्वीर प्रकार: श्रेणी के अनुसार अपने आप चुनें</option>
-            <option value="thaliSimple">सादा थाली चित्र</option>
-            <option value="thaliSpecial">स्पेशल थाली चित्र</option>
-            <option value="murabba">आंवला मुरब्बा चित्र</option>
-            <option value="barfi">आंवला बर्फी चित्र</option>
-            <option value="laddu">आंवला लड्डू चित्र</option>
-            <option value="candy">आंवला कैंडी चित्र</option>
-            <option value="tofuPlain">सादा सोया टोफू चित्र</option>
-            <option value="tofuMasala">मसाला सोया टोफू चित्र</option>
-            <option value="trialPack">₹10 ट्रायल पैक चित्र</option>
-          </select>
-          <button type="button" onclick="addNewProduct()" class="bg-green-700 hover:bg-green-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
-            उत्पाद जोड़ें
+shaman-foods/
+├── index.html
+└── images/
+    ├── thali.jpg
+    ├── special-thali.jpg
+    ├── amla-murabba.jpg
+    ├── amla-barfi.jpg
+    ├── amla-laddu.jpg
+    ├── amla-candy.jpg
+    ├── plain-soy-tofu.jpg
+    ├── masala-soy-tofu.jpg
+    ├── rs10-trial-pack.jpg
+    ├── food-products.jpg
+    ├── fresh-amla.jpg
+    ├── soybeans.jpg
+    └── soy-milk.jpg
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHAMAN Foods — 81 Ajit Nagar, Pratapgarh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f7f5;
+      color: #1f2937;
+      overflow-x: hidden;
+    }
+    .tab-active {
+      border-bottom: 3px solid #15803d;
+      color: #15803d;
+      font-weight: 700;
+      background-color: #f0fdf4;
+    }
+    .product-square-frame {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 240px;
+      background-color: #f3f4f6;
+      border-bottom: 1px solid #e5e7eb;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .product-square-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #4b5563;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-44">
+
+  <!-- Header -->
+  <header class="bg-green-800 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">SHAMAN Foods</h1>
+          <p class="text-xs sm:text-sm text-green-100 mt-0.5">
+            81 Ajit Nagar, Pratapgarh (U.P.) | WhatsApp: +917379551919
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="switchTab('payment')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
+            Payment &amp; QR
+          </button>
+          <button type="button" onclick="shareWebsiteOnWhatsApp()" class="bg-green-600 hover:bg-green-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
+            Share Link
+          </button>
+          <button type="button" onclick="openAdminTab()" class="bg-amber-400 hover:bg-amber-300 text-gray-950 text-xs sm:text-sm font-bold px-3 py-2 rounded-lg shadow transition">
+            Admin
           </button>
         </div>
+      </div>
+    </div>
 
-        <!-- Existing Items List -->
+    <!-- Offer Banner -->
+    <div class="bg-orange-600 text-white text-xs sm:text-sm py-2 px-4">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+        <span>Rs 10 Trial Packs Available | Free Home Delivery on Orders Rs 250 and Above (Rs 30 Below Rs 250)</span>
+        <button type="button" onclick="switchTab('offers')" class="bg-white text-orange-700 font-bold px-2.5 py-1 rounded text-xs hover:bg-orange-50 transition">
+          View Offers
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white text-gray-700 border-b border-gray-200">
+      <div class="max-w-6xl mx-auto px-2 sm:px-4 flex overflow-x-auto">
+        <button type="button" id="tab-menu" onclick="switchTab('menu')" class="tab-active py-3 px-4 text-sm whitespace-nowrap transition">
+          Menu &amp; Products
+        </button>
+        <button type="button" id="tab-offers" onclick="switchTab('offers')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
+          Offers &amp; Combos
+        </button>
+        <button type="button" id="tab-payment" onclick="switchTab('payment')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
+          Payment &amp; QR Codes
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-8">
+
+    <!-- MENU SECTION -->
+    <section id="section-menu" class="space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <input
+          id="searchInput"
+          type="text"
+          oninput="renderMenu()"
+          placeholder="Search items (Thali, Amla, Murabba, Soy Tofu, Trial)..."
+          class="w-full sm:w-80 border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+        />
+        <div id="categoryButtons" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- OFFERS SECTION -->
+    <section id="section-offers" class="hidden space-y-5">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <h2 class="text-xl font-bold text-gray-900">Special Combos &amp; Seasonal Offers</h2>
+        <p class="text-sm text-gray-600 mt-1">Original item prices remain unchanged. Free delivery on orders Rs 250+.</p>
+      </div>
+      <div id="offersGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- PAYMENT & WEBSITE QR SECTION -->
+    <section id="section-payment" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- UPI QR Box -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center space-y-4">
+          <h2 class="text-lg font-bold text-gray-900">UPI Payment QR</h2>
+          <p class="text-xs text-gray-600">Account Holder: Dr Arun singh / Arun Singh | UPI ID: arunk111213-3@oksbi</p>
+          <div class="flex justify-center">
+            <div id="upiQrBox" class="p-3 bg-white border-2 border-green-700 rounded-xl inline-block"></div>
+          </div>
+          <div id="uploadedQrPreviewWrap" class="hidden space-y-1">
+            <p class="text-xs font-semibold text-gray-700">Uploaded QR Image:</p>
+            <img id="uploadedQrImg" alt="Uploaded UPI QR" loading="lazy" class="mx-auto max-h-48 rounded-lg border border-gray-200 object-contain" />
+          </div>
+          <div class="bg-green-50 border border-dashed border-green-600 rounded-xl p-3 flex items-center justify-between gap-2">
+            <span id="upiIdText" class="font-mono font-bold text-green-900 text-xs sm:text-sm break-all">arunk111213-3@oksbi</span>
+            <button type="button" onclick="copyUpiId()" class="bg-green-700 hover:bg-green-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shrink-0">
+              Copy UPI
+            </button>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1">Optional Amount for Dynamic UPI QR (Rs)</label>
+            <input
+              id="qrAmountInput"
+              type="number"
+              min="1"
+              oninput="renderQrCodes()"
+              placeholder="e.g. 149 or 250 (blank = open amount)"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-center"
+            />
+          </div>
+        </div>
+
+        <!-- Website QR Box -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center space-y-4">
+          <h2 class="text-lg font-bold text-gray-900">SHAMAN Foods Website QR</h2>
+          <p class="text-xs text-gray-600">Scan to open SHAMAN Foods directly in your mobile browser.</p>
+          <div class="flex justify-center">
+            <div id="websiteQrBox" class="p-3 bg-white border-2 border-blue-700 rounded-xl inline-block"></div>
+          </div>
+          <p class="text-xs font-mono text-gray-700 break-all bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+            https://arunk111213-web.github.io/shaman-foods/
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs sm:text-sm text-gray-800 space-y-1.5">
+        <p class="font-bold text-gray-900">Payment Verification &amp; Status Rules:</p>
+        <p>1. Supported Payment Statuses: <strong>Pending</strong>, <strong>Received</strong>, and <strong>Failed</strong>.</p>
+        <p>2. Sharing a payment screenshot alone is <strong>NOT</strong> proof of payment. An order is marked <strong>Received</strong> only after actual verification in your bank/UPI account.</p>
+        <p>3. Business Address: 81 Ajit Nagar, Pratapgarh (U.P.) | WhatsApp: +917379551919</p>
+      </div>
+    </section>
+
+    <!-- ADMIN SECTION -->
+    <section id="section-admin" class="hidden space-y-6">
+      <div id="adminLoginBox" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-md mx-auto space-y-4">
+        <h2 class="text-lg font-bold text-gray-900">Admin Access</h2>
+        <p class="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+          Security Note: A frontend passcode in public HTML/JS is not server-grade security. For production multi-user security and shared multi-device sync, connect Firebase Authentication and Firestore.
+        </p>
+        <input
+          id="adminPasswordInput"
+          type="password"
+          placeholder="Enter admin passcode"
+          class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm"
+        />
+        <button type="button" onclick="loginAdmin()" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2.5 rounded-lg text-sm">
+          Unlock Admin Panel
+        </button>
+      </div>
+
+      <div id="adminPanelBox" class="hidden space-y-6">
+        <!-- Admin Top Bar & Backup/Restore -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">SHAMAN Foods Admin Dashboard</h2>
+            <p class="text-xs text-gray-600">
+              Storage Mode: Browser localStorage + JSON Backup/Restore (Add Firebase/backend for shared multi-device sync across customers).
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="exportBackupJson()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg">
+              Download Backup (JSON)
+            </button>
+            <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-2 rounded-lg cursor-pointer">
+              Restore Backup
+              <input type="file" accept=".json,application/json" onchange="importBackupJson(event)" class="hidden" />
+            </label>
+            <button type="button" onclick="resetDefaultProducts()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-semibold px-3 py-2 rounded-lg">
+              Reset Default Menu
+            </button>
+            <button type="button" onclick="logoutAdmin()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-semibold px-3 py-2 rounded-lg">
+              Lock
+            </button>
+          </div>
+        </div>
+
+        <!-- Add / Edit Product -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-4">
+          <h3 id="productFormTitle" class="font-bold text-gray-900">Add New Product</h3>
+          <input id="editProductId" type="hidden" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <input id="newItemName" type="text" placeholder="Product Name *" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="newItemPrice" type="number" min="1" placeholder="Original Price (Rs) *" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="newItemUnit" type="text" placeholder="Unit (e.g. 200 g, 1 Thali)" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="newItemStock" type="number" min="0" placeholder="Stock Qty (e.g. 20)" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <select id="newItemCategory" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+              <option value="Thali">Thali</option>
+              <option value="Amla">Amla</option>
+              <option value="Soy Tofu">Soy Tofu</option>
+              <option value="Rs 10 Trial">Rs 10 Trial</option>
+            </select>
+            <input id="newItemDesc" type="text" placeholder="Description / Ingredients / Storage / Allergen Info" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <label class="text-xs font-semibold text-gray-700">
+              Genuine Product Photo (optional):
+              <input id="newItemPhotoFile" type="file" accept="image/*" class="ml-1 text-xs" />
+            </label>
+            <button type="button" onclick="saveProductForm()" class="bg-green-700 hover:bg-green-800 text-white font-bold px-4 py-2 rounded-lg text-sm">
+              Save Product
+            </button>
+            <button type="button" onclick="cancelEditProduct()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-3 py-2 rounded-lg text-sm">
+              Clear Form
+            </button>
+          </div>
+        </div>
+
+        <!-- Product List in Admin -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-3">
-          <h3 class="font-bold text-gray-900">📋 मौजूदा उत्पाद सूची</h3>
+          <h3 class="font-bold text-gray-900">Manage Products, Stock &amp; Genuine Photos</h3>
           <div id="adminProductList" class="divide-y divide-gray-100"></div>
+        </div>
+
+        <!-- Custom / Festival Offer Manager -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-4">
+          <h3 class="font-bold text-gray-900">Create / Add Custom or Festival Offer</h3>
+          <p class="text-xs text-gray-600">Supports Holi, Diwali, Dussehra, Raksha Bandhan, and custom special-day offers without changing original base prices.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input id="offerTitleInput" type="text" placeholder="Offer Title *" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <select id="offerOccasionInput" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+              <option value="Custom Special">Custom Special</option>
+              <option value="Holi">Holi</option>
+              <option value="Diwali">Diwali</option>
+              <option value="Dussehra">Dussehra</option>
+              <option value="Raksha Bandhan">Raksha Bandhan</option>
+            </select>
+            <input id="offerUnitInput" type="text" placeholder="Pack / Unit (e.g. Combo Pack)" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="offerOriginalPriceInput" type="number" min="1" placeholder="Original Price (Rs) *" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="offerFinalPriceInput" type="number" min="1" placeholder="Offer Price (Rs) *" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            <input id="offerValidUntilInput" type="date" class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <input id="offerDescInput" type="text" placeholder="Offer details / included items" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          <button type="button" onclick="addCustomOffer()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold px-4 py-2 rounded-lg text-sm">
+            Add Offer
+          </button>
+          <div id="adminOffersList" class="divide-y divide-gray-100 pt-2"></div>
+        </div>
+
+        <!-- Order Dashboard & History -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-4">
+          <h3 class="font-bold text-gray-900">Order History &amp; Status Dashboard</h3>
+          <p class="text-xs text-gray-600">
+            Cancelling an order restores reserved stock where applicable. Sending a WhatsApp message does not automatically mark an order Accepted in a central database.
+          </p>
+          <div id="adminOrdersList" class="space-y-3"></div>
         </div>
       </div>
     </section>
 
-  </main>
-
-  <!-- Floating Cart Bar -->
-  <div id="cartBar" class="hidden fixed bottom-0 inset-x-0 bg-gray-900 text-white shadow-2xl border-t border-gray-700 z-40">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <span id="cartCountText" class="font-bold text-sm sm:text-base text-green-400">0 आइटम</span>
-        <span class="mx-2 text-gray-500">|</span>
-        <span id="cartTotalText" class="font-extrabold text-base sm:text-lg">कुल: ₹0</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <button type="button" onclick="clearCart()" class="bg-gray-700 hover:bg-gray-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition">
-          खाली करें
-        </button>
-        <button type="button" onclick="sendOrderOnWhatsApp()" class="bg-green-500 hover:bg-green-400 text-gray-950 text-xs sm:text-sm font-extrabold px-4 py-2 rounded-lg shadow transition">
-          📲 WhatsApp ऑर्डर भेजें
+    <!-- CUSTOMER DETAILS, LOCATION & FOOD INFO SECTION -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900">Customer Details, Delivery Location &amp; Map</h2>
+          <p class="text-xs text-gray-600">Enter your address manually or use Current Location (GPS) with permission.</p>
+        </div>
+        <button type="button" onclick="requestCustomerGpsLocation()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition">
+          Use Current GPS Location
         </button>
       </div>
-    </div>
-  </div>
 
-  <script>
-    const BUSINESS_NAME = "SHAMAN Foods";
-    const ACCOUNT_HOLDER_NAME = "अरुण सिंह";
-    const BUSINESS_ADDRESS = "81 अजीत नगर, प्रतापगढ़ (उ.प्र.)";
-    const UPI_ID = "arunk111213-3@oksbi";
-    const WHATSAPP_NUMBER = "917379551919";
-    const WEBSITE_URL = "https://arunk111213-web.github.io/shaman-foods/";
-    const ADMIN_PASSCODE = "A300";
-
-    function escapeHtmlAttr(str) {
-      return String(str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
-
-    function getFoodSvg(visualType, category) {
-      const type = visualType && visualType !== "auto"
-        ? visualType
-        : category === "थाली" ? "thaliSimple"
-        : category === "आंवला" ? "murabba"
-        : category === "सोया टोफू" ? "tofuPlain"
-        : category === "₹10 ट्रायल" ? "trialPack"
-        : "thaliSimple";
-
-      if (type === "thaliSimple" || type === "thaliSpecial") {
-        const isSpecial = type === "thaliSpecial";
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-amber-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="${isSpecial ? "#fff7ed" : "#f0fdf4"}"/>
-            <ellipse cx="160" cy="95" rx="115" ry="66" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
-            <ellipse cx="160" cy="93" rx="103" ry="57" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-            <ellipse cx="160" cy="70" rx="28" ry="15" fill="#fefce8" stroke="#fde047" stroke-width="1.5"/>
-            <circle cx="115" cy="84" r="19" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
-            <circle cx="205" cy="84" r="19" fill="${isSpecial ? "#dc2626" : "#16a34a"}" stroke="#991b1b" stroke-width="2"/>
-            <circle cx="125" cy="122" r="18" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
-            <circle cx="160" cy="126" r="18" fill="#fcd34d" stroke="#d97706" stroke-width="2"/>
-            <circle cx="196" cy="122" r="16" fill="${isSpecial ? "#fb923c" : "#86efac"}" stroke="#ea580c" stroke-width="1.5"/>
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${isSpecial ? "स्पेशल घर जैसी थाली" : "सादा घर जैसी थाली"}</text>
-          </svg>
-        `;
-      }
-
-      if (type === "murabba") {
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-lime-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="#f7fee7"/>
-            <rect x="115" y="34" width="90" height="114" rx="14" fill="#ecfccb" fill-opacity="0.85" stroke="#65a30d" stroke-width="3"/>
-            <rect x="122" y="22" width="76" height="16" rx="5" fill="#4d7c0f"/>
-            <circle cx="142" cy="76" r="13" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
-            <circle cx="176" cy="72" r="14" fill="#bef264" stroke="#4d7c0f" stroke-width="2"/>
-            <circle cx="156" cy="104" r="15" fill="#84cc16" stroke="#3f6212" stroke-width="2"/>
-            <circle cx="182" cy="116" r="12" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
-            <circle cx="136" cy="118" r="11" fill="#bef264" stroke="#4d7c0f" stroke-width="2"/>
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#365314">प्रतापगढ़ी आंवला मुरब्बा</text>
-          </svg>
-        `;
-      }
-
-      if (type === "barfi") {
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-emerald-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="#ecfdf5"/>
-            <polygon points="95,88 145,62 195,88 145,114" fill="#a7f3d0" stroke="#059669" stroke-width="2.5"/>
-            <polygon points="135,108 185,82 235,108 185,134" fill="#6ee7b7" stroke="#047857" stroke-width="2.5"/>
-            <circle cx="145" cy="88" r="3" fill="#b45309"/>
-            <circle cx="185" cy="108" r="3" fill="#b45309"/>
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">आंवला बर्फी</text>
-          </svg>
-        `;
-      }
-
-      if (type === "laddu") {
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-yellow-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="#fefce8"/>
-            <circle cx="122" cy="102" r="24" fill="#eab308" stroke="#a16207" stroke-width="2.5"/>
-            <circle cx="164" cy="84" r="26" fill="#facc15" stroke="#a16207" stroke-width="2.5"/>
-            <circle cx="196" cy="108" r="23" fill="#ca8a04" stroke="#854d0e" stroke-width="2.5"/>
-            <circle cx="154" cy="118" r="22" fill="#eab308" stroke="#a16207" stroke-width="2.5"/>
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">पौष्टिक आंवला लड्डू</text>
-          </svg>
-        `;
-      }
-
-      if (type === "candy") {
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-orange-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="#fff7ed"/>
-            <rect x="85" y="72" width="54" height="32" rx="14" fill="#fb923c" stroke="#c2410c" stroke-width="2.5"/>
-            <rect x="145" y="64" width="54" height="32" rx="14" fill="#f97316" stroke="#9a3412" stroke-width="2.5"/>
-            <rect x="175" y="102" width="54" height="32" rx="14" fill="#fdba74" stroke="#c2410c" stroke-width="2.5"/>
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#9a3412">खट्टी-मीठी आंवला कैंडी</text>
-          </svg>
-        `;
-      }
-
-      if (type === "tofuPlain" || type === "tofuMasala") {
-        const isMasala = type === "tofuMasala";
-        return `
-          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-stone-50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="320" height="180" fill="${isMasala ? "#fef2f2" : "#f8fafc"}"/>
-            <rect x="88" y="66" width="64" height="52" rx="10" fill="${isMasala ? "#fed7aa" : "#ffffff"}" stroke="${isMasala ? "#ea580c" : "#64748b"}" stroke-width="2.5"/>
-            <rect x="166" y="74" width="64" height="52" rx="10" fill="${isMasala ? "#fdba74" : "#f1f5f9"}" stroke="${isMasala ? "#c2410c" : "#475569"}" stroke-width="2.5"/>
-            ${isMasala ? `<circle cx="112" cy="86" r="3" fill="#dc2626"/><circle cx="132" cy="98" r="3" fill="#15803d"/><circle cx="192" cy="96" r="3" fill="#dc2626"/><circle cx="210" cy="108" r="3" fill="#15803d"/>` : ""}
-            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${isMasala ? "मसाला सोया टोफू" : "ताज़ा सादा सोया टोफू"}</text>
-          </svg>
-        `;
-      }
-
-      return `
-        <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-green-50" xmlns="http://www.w3.org/2000/svg">
-          <rect width="320" height="180" fill="#f0fdf4"/>
-          <rect x="95" y="46" width="130" height="92" rx="16" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
-          <text x="160" y="88" text-anchor="middle" font-size="22" font-weight="bold" fill="#15803d">₹10</text>
-          <text x="160" y="114" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">स्वाद ट्रायल पैक</text>
-          <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532d">कम दाम में स्वाद चखें</text>
-        </svg>
-      `;
-    }
-
-    const DEFAULT_PRODUCTS = [
-      { id: 1, name: "सादा थाली", category: "थाली", price: 80, unit: "1 थाली", desc: "रोटी, दाल, सब्जी, चावल, सलाद, अचार", visualType: "thaliSimple" },
-      { id: 2, name
-
-              
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <input id="customerName" type="text" placeholder="Customer Full Name *" class="border border-gray-300 rounded-lg px-3
+            
