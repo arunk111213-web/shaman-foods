@@ -20,7 +20,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col pb-24">
 
   <!-- Header -->
   <header class="bg-green-800 text-white shadow-md sticky top-0 z-30">
@@ -35,14 +35,14 @@
           </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="switchTab('payment')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
+          <button type="button" onclick="switchTab('payment')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
             💳 पेमेंट / QR
           </button>
-          <button onclick="shareOnWhatsApp()" class="bg-green-600 hover:bg-green-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
+          <button type="button" onclick="shareOnWhatsApp()" class="bg-green-600 hover:bg-green-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg shadow transition">
             📤 शेयर
           </button>
-          <button onclick="openAdminTab()" class="bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs sm:text-sm font-bold px-3 py-2 rounded-lg shadow transition">
-            🔐 एडमिन
+          <button type="button" onclick="openAdminTab()" title="विशेष विकल्प" aria-label="विशेष विकल्प" class="bg-amber-400 hover:bg-amber-300 text-gray-950 text-sm sm:text-base font-bold px-3 py-1.5 rounded-lg shadow transition">
+            ⭐
           </button>
         </div>
       </div>
@@ -52,7 +52,7 @@
     <div class="bg-orange-600 text-white text-xs sm:text-sm py-2 px-4">
       <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <span>🎉 विशेष ऑफर: ₹10 में स्वाद चखें (ट्रायल पैक) + ₹250 से ऊपर के ऑर्डर पर फ्री होम डिलीवरी!</span>
-        <button onclick="switchTab('offers')" class="bg-white text-orange-700 font-bold px-2.5 py-1 rounded text-xs hover:bg-orange-50 transition">
+        <button type="button" onclick="switchTab('offers')" class="bg-white text-orange-700 font-bold px-2.5 py-1 rounded text-xs hover:bg-orange-50 transition">
           सभी ऑफर देखें
         </button>
       </div>
@@ -61,17 +61,17 @@
     <!-- Navigation Tabs -->
     <nav class="bg-white text-gray-700 border-b border-gray-200">
       <div class="max-w-6xl mx-auto px-2 sm:px-4 flex overflow-x-auto">
-        <button id="tab-menu" onclick="switchTab('menu')" class="tab-active py-3 px-4 text-sm whitespace-nowrap transition">
+        <button type="button" id="tab-menu" onclick="switchTab('menu')" class="tab-active py-3 px-4 text-sm whitespace-nowrap transition">
           🍽️ मेनू / उत्पाद
         </button>
-        <button id="tab-offers" onclick="switchTab('offers')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
+        <button type="button" id="tab-offers" onclick="switchTab('offers')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
           🎁 खास ऑफर
         </button>
-        <button id="tab-payment" onclick="switchTab('payment')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
+        <button type="button" id="tab-payment" onclick="switchTab('payment')" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
           📱 पेमेंट व खाता
         </button>
-        <button id="tab-admin" onclick="openAdminTab()" class="py-3 px-4 text-sm whitespace-nowrap hover:text-green-700 transition">
-          🔒 एडमिन पैनल
+        <button type="button" id="tab-admin" onclick="openAdminTab()" title="विशेष विकल्प" aria-label="विशेष विकल्प" class="py-3 px-4 text-base whitespace-nowrap hover:text-green-700 transition">
+          ⭐
         </button>
       </div>
     </nav>
@@ -119,7 +119,7 @@
 
         <div class="bg-green-50 border border-dashed border-green-600 rounded-xl p-3.5 flex items-center justify-between gap-2">
           <span id="upiIdText" class="font-mono font-bold text-green-900 text-sm sm:text-base break-all"></span>
-          <button onclick="copyUpiId()" class="bg-green-700 hover:bg-green-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shrink-0 transition">
+          <button type="button" onclick="copyUpiId()" class="bg-green-700 hover:bg-green-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shrink-0 transition">
             कॉपी करें
           </button>
         </div>
@@ -128,6 +128,7 @@
           <p class="font-bold text-gray-900">🏦 बैंक अकाउंट विवरण (NEFT / IMPS / UPI):</p>
           <p><span class="font-semibold">खाता नाम:</span> <span id="accountHolderDisplay">अरुण सिंह</span></p>
           <p><span class="font-semibold">UPI ID:</span> <span id="upiDetailDisplay">arunk111213-3@oksbi</span></p>
+          <p><span class="font-semibold">WhatsApp ऑर्डर नंबर:</span> +917379551919</p>
           <p><span class="font-semibold">पता:</span> 81 अजीत नगर, प्रतापगढ़ (उ.प्र.)</p>
         </div>
 
@@ -148,7 +149,7 @@
     <!-- ADMIN SECTION -->
     <section id="section-admin" class="hidden max-w-3xl mx-auto space-y-6">
       <div id="adminLoginBox" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-md mx-auto space-y-4">
-        <h2 class="text-lg font-bold text-gray-900">🔐 एडमिन लॉगिन</h2>
+        <h2 class="text-lg font-bold text-gray-900">⭐ एडमिन लॉगिन</h2>
         <p class="text-xs text-gray-600">मेनू, दाम और ऑफर बदलने के लिए अपना पासवर्ड दर्ज करें।</p>
         <input
           id="adminPasswordInput"
@@ -156,7 +157,7 @@
           placeholder="एडमिन पासवर्ड डालें"
           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
         />
-        <button onclick="loginAdmin()" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2.5 rounded-lg text-sm transition">
+        <button type="button" onclick="loginAdmin()" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2.5 rounded-lg text-sm transition">
           लॉगिन करें
         </button>
       </div>
@@ -167,7 +168,7 @@
             <h2 class="text-xl font-bold text-gray-900">⚙️ एडमिन पैनल — SHAMAN Foods</h2>
             <p class="text-xs text-gray-600">यहाँ से उत्पाद जोड़ें, दाम बदलें या हटाएँ।</p>
           </div>
-          <button onclick="logoutAdmin()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-semibold px-3 py-2 rounded-lg transition">
+          <button type="button" onclick="logoutAdmin()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-semibold px-3 py-2 rounded-lg transition">
             लॉक करें
           </button>
         </div>
@@ -187,8 +188,19 @@
             </select>
           </div>
           <input id="newItemDesc" type="text" placeholder="संक्षिप्त विवरण" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
-          <input id="newItemImg" type="text" placeholder="फोटो का लिंक (वैकल्पिक — खाली छोड़ें तो अपने आप सुंदर फोटो आएगी)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
-          <button onclick="addNewProduct()" class="bg-green-700 hover:bg-green-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
+          <select id="newItemVisualType" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option value="auto">तस्वीर प्रकार: श्रेणी के अनुसार अपने आप चुनें</option>
+            <option value="thaliSimple">सादा थाली चित्र</option>
+            <option value="thaliSpecial">स्पेशल थाली चित्र</option>
+            <option value="murabba">आंवला मुरब्बा चित्र</option>
+            <option value="barfi">आंवला बर्फी चित्र</option>
+            <option value="laddu">आंवला लड्डू चित्र</option>
+            <option value="candy">आंवला कैंडी चित्र</option>
+            <option value="tofuPlain">सादा सोया टोफू चित्र</option>
+            <option value="tofuMasala">मसाला सोया टोफू चित्र</option>
+            <option value="trialPack">₹10 ट्रायल पैक चित्र</option>
+          </select>
+          <button type="button" onclick="addNewProduct()" class="bg-green-700 hover:bg-green-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
             उत्पाद जोड़ें
           </button>
         </div>
@@ -197,17 +209,6 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-3">
           <h3 class="font-bold text-gray-900">📋 मौजूदा उत्पाद सूची</h3>
           <div id="adminProductList" class="divide-y divide-gray-100"></div>
-        </div>
-
-        <!-- Export Code Box -->
-        <div class="bg-amber-50 border border-amber-300 rounded-2xl p-5 space-y-3">
-          <h3 class="font-bold text-amber-950">🌐 सभी ग्राहकों के लिए GitHub पर अपडेट करें</h3>
-          <p class="text-xs text-amber-900 leading-relaxed">
-            आपके बदलाव इस फ़ोन में तुरंत सेव हो गए हैं। यदि आप चाहते हैं कि ये बदलाव हर ग्राहक के फ़ोन पर दिखें, तो नीचे बटन दबाकर अपडेटेड कोड कॉपी करें और GitHub की <b>index.html</b> फ़ाइल में पेस्ट कर दें।
-          </p>
-          <button onclick="copyUpdatedSourceCode()" class="bg-amber-700 hover:bg-amber-800 text-white font-bold px-4 py-2.5 rounded-lg text-sm transition">
-            📋 अपडेटेड पूरा कोड कॉपी करें (GitHub के लिए)
-          </button>
         </div>
       </div>
     </section>
@@ -223,10 +224,10 @@
         <span id="cartTotalText" class="font-extrabold text-base sm:text-lg">कुल: ₹0</span>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="clearCart()" class="bg-gray-700 hover:bg-gray-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition">
+        <button type="button" onclick="clearCart()" class="bg-gray-700 hover:bg-gray-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition">
           खाली करें
         </button>
-        <button onclick="sendOrderOnWhatsApp()" class="bg-green-500 hover:bg-green-400 text-gray-950 text-xs sm:text-sm font-extrabold px-4 py-2 rounded-lg shadow transition">
+        <button type="button" onclick="sendOrderOnWhatsApp()" class="bg-green-500 hover:bg-green-400 text-gray-950 text-xs sm:text-sm font-extrabold px-4 py-2 rounded-lg shadow transition">
           📲 WhatsApp ऑर्डर भेजें
         </button>
       </div>
@@ -238,155 +239,124 @@
     const ACCOUNT_HOLDER_NAME = "अरुण सिंह";
     const BUSINESS_ADDRESS = "81 अजीत नगर, प्रतापगढ़ (उ.प्र.)";
     const UPI_ID = "arunk111213-3@oksbi";
-    const WHATSAPP_NUMBER = "919718266300";
+    const WHATSAPP_NUMBER = "917379551919";
     const WEBSITE_URL = "https://arunk111213-web.github.io/shaman-foods/";
     const ADMIN_PASSCODE = "A300";
 
-    const PHOTO_LIBRARY = {
-      thaliSimple: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80",
-      thaliSpecial: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80",
-      murabba: "https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=800&q=80",
-      barfi: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
-      laddu: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
-      candy: "https://images.unsplash.com/photo-1582058091505-f87a18c0da40?auto=format&fit=crop&w=800&q=80",
-      tofuPlain: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
-      tofuMasala: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80",
-      trialPack: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80"
-    };
+    function escapeHtmlAttr(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function getFoodSvg(visualType, category) {
+      const type = visualType && visualType !== "auto"
+        ? visualType
+        : category === "थाली" ? "thaliSimple"
+        : category === "आंवला" ? "murabba"
+        : category === "सोया टोफू" ? "tofuPlain"
+        : category === "₹10 ट्रायल" ? "trialPack"
+        : "thaliSimple";
+
+      if (type === "thaliSimple" || type === "thaliSpecial") {
+        const isSpecial = type === "thaliSpecial";
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-amber-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="${isSpecial ? "#fff7ed" : "#f0fdf4"}"/>
+            <ellipse cx="160" cy="95" rx="115" ry="66" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
+            <ellipse cx="160" cy="93" rx="103" ry="57" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+            <ellipse cx="160" cy="70" rx="28" ry="15" fill="#fefce8" stroke="#fde047" stroke-width="1.5"/>
+            <circle cx="115" cy="84" r="19" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+            <circle cx="205" cy="84" r="19" fill="${isSpecial ? "#dc2626" : "#16a34a"}" stroke="#991b1b" stroke-width="2"/>
+            <circle cx="125" cy="122" r="18" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+            <circle cx="160" cy="126" r="18" fill="#fcd34d" stroke="#d97706" stroke-width="2"/>
+            <circle cx="196" cy="122" r="16" fill="${isSpecial ? "#fb923c" : "#86efac"}" stroke="#ea580c" stroke-width="1.5"/>
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${isSpecial ? "स्पेशल घर जैसी थाली" : "सादा घर जैसी थाली"}</text>
+          </svg>
+        `;
+      }
+
+      if (type === "murabba") {
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-lime-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#f7fee7"/>
+            <rect x="115" y="34" width="90" height="114" rx="14" fill="#ecfccb" fill-opacity="0.85" stroke="#65a30d" stroke-width="3"/>
+            <rect x="122" y="22" width="76" height="16" rx="5" fill="#4d7c0f"/>
+            <circle cx="142" cy="76" r="13" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
+            <circle cx="176" cy="72" r="14" fill="#bef264" stroke="#4d7c0f" stroke-width="2"/>
+            <circle cx="156" cy="104" r="15" fill="#84cc16" stroke="#3f6212" stroke-width="2"/>
+            <circle cx="182" cy="116" r="12" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
+            <circle cx="136" cy="118" r="11" fill="#bef264" stroke="#4d7c0f" stroke-width="2"/>
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#365314">प्रतापगढ़ी आंवला मुरब्बा</text>
+          </svg>
+        `;
+      }
+
+      if (type === "barfi") {
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-emerald-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#ecfdf5"/>
+            <polygon points="95,88 145,62 195,88 145,114" fill="#a7f3d0" stroke="#059669" stroke-width="2.5"/>
+            <polygon points="135,108 185,82 235,108 185,134" fill="#6ee7b7" stroke="#047857" stroke-width="2.5"/>
+            <circle cx="145" cy="88" r="3" fill="#b45309"/>
+            <circle cx="185" cy="108" r="3" fill="#b45309"/>
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">आंवला बर्फी</text>
+          </svg>
+        `;
+      }
+
+      if (type === "laddu") {
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-yellow-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#fefce8"/>
+            <circle cx="122" cy="102" r="24" fill="#eab308" stroke="#a16207" stroke-width="2.5"/>
+            <circle cx="164" cy="84" r="26" fill="#facc15" stroke="#a16207" stroke-width="2.5"/>
+            <circle cx="196" cy="108" r="23" fill="#ca8a04" stroke="#854d0e" stroke-width="2.5"/>
+            <circle cx="154" cy="118" r="22" fill="#eab308" stroke="#a16207" stroke-width="2.5"/>
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">पौष्टिक आंवला लड्डू</text>
+          </svg>
+        `;
+      }
+
+      if (type === "candy") {
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-orange-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#fff7ed"/>
+            <rect x="85" y="72" width="54" height="32" rx="14" fill="#fb923c" stroke="#c2410c" stroke-width="2.5"/>
+            <rect x="145" y="64" width="54" height="32" rx="14" fill="#f97316" stroke="#9a3412" stroke-width="2.5"/>
+            <rect x="175" y="102" width="54" height="32" rx="14" fill="#fdba74" stroke="#c2410c" stroke-width="2.5"/>
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#9a3412">खट्टी-मीठी आंवला कैंडी</text>
+          </svg>
+        `;
+      }
+
+      if (type === "tofuPlain" || type === "tofuMasala") {
+        const isMasala = type === "tofuMasala";
+        return `
+          <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-stone-50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="${isMasala ? "#fef2f2" : "#f8fafc"}"/>
+            <rect x="88" y="66" width="64" height="52" rx="10" fill="${isMasala ? "#fed7aa" : "#ffffff"}" stroke="${isMasala ? "#ea580c" : "#64748b"}" stroke-width="2.5"/>
+            <rect x="166" y="74" width="64" height="52" rx="10" fill="${isMasala ? "#fdba74" : "#f1f5f9"}" stroke="${isMasala ? "#c2410c" : "#475569"}" stroke-width="2.5"/>
+            ${isMasala ? `<circle cx="112" cy="86" r="3" fill="#dc2626"/><circle cx="132" cy="98" r="3" fill="#15803d"/><circle cx="192" cy="96" r="3" fill="#dc2626"/><circle cx="210" cy="108" r="3" fill="#15803d"/>` : ""}
+            <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${isMasala ? "मसाला सोया टोफू" : "ताज़ा सादा सोया टोफू"}</text>
+          </svg>
+        `;
+      }
+
+      return `
+        <svg viewBox="0 0 320 180" class="w-full h-44 object-cover bg-green-50" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="180" fill="#f0fdf4"/>
+          <rect x="95" y="46" width="130" height="92" rx="16" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+          <text x="160" y="88" text-anchor="middle" font-size="22" font-weight="bold" fill="#15803d">₹10</text>
+          <text x="160" y="114" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">स्वाद ट्रायल पैक</text>
+          <text x="160" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532d">कम दाम में स्वाद चखें</text>
+        </svg>
+      `;
+    }
 
     const DEFAULT_PRODUCTS = [
-      { id: 1, name: "सादा थाली", category: "थाली", price: 80, unit: "1 थाली", desc: "रोटी, दाल, सब्जी, चावल, सलाद, अचार", image: PHOTO_LIBRARY.thaliSimple },
-      { id: 2, name: "स्पेशल थाली", category: "थाली", price: 120, unit: "1 थाली", desc: "स्पेशल सब्जी, टोफू/पनीर, दाल, रोटी, चावल, मिठाई", image: PHOTO_LIBRARY.thaliSpecial },
-      { id: 3, name: "आंवला मुरब्बा", category: "आंवला", price: 50, unit: "200 g", desc: "प्रतापगढ़ी आंवले का पारंपरिक मीठा मुरब्बा", image: PHOTO_LIBRARY.murabba },
-      { id: 4, name: "आंवला बर्फी", category: "आंवला", price: 90, unit: "200 g", desc: "स्वादिष्ट और पौष्टिक घर की बनी आंवला बर्फी", image: PHOTO_LIBRARY.barfi },
-      { id: 5, name: "आंवला लड्डू", category: "आंवला", price: 75, unit: "200 g", desc: "पौष्टिक और स्वादिष्ट आंवला लड्डू", image: PHOTO_LIBRARY.laddu },
-      { id: 6, name: "सादा आंवला कैंडी", category: "आंवला", price: 60, unit: "200 g", desc: "खट्टी-मीठी पाचक आंवला कैंडी", image: PHOTO_LIBRARY.candy },
-      { id: 7, name: "मसाला आंवला कैंडी", category: "आंवला", price: 75, unit: "200 g", desc: "चटपटी मसालेदार आंवला कैंडी", image: PHOTO_LIBRARY.candy },
-      { id: 8, name: "सादा सोया टोफू", category: "सोया टोफू", price: 35, unit: "200 g", desc: "ताज़ा, हाई प्रोटीन शुद्ध सोया टोफू", image: PHOTO_LIBRARY.tofuPlain },
-      { id: 9, name: "मसाला सोया टोफू", category: "सोया टोफू", price: 40, unit: "200 g", desc: "हल्के मसालों वाला ताज़ा सोया टोफू", image: PHOTO_LIBRARY.tofuMasala },
-      { id: 10, name: "आंवला मुरब्बा (ट्रायल)", category: "₹10 ट्रायल", price: 10, unit: "ट्रायल पैक", desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", image: PHOTO_LIBRARY.trialPack },
-      { id: 11, name: "सादा कैंडी (ट्रायल)", category: "₹10 ट्रायल", price: 10, unit: "ट्रायल पैक", desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", image: PHOTO_LIBRARY.trialPack },
-      { id: 12, name: "मसाला कैंडी (ट्रायल)", category: "₹10 ट्रायल", price: 10, unit: "ट्रायल पैक", desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", image: PHOTO_LIBRARY.trialPack },
-      { id: 13, name: "सादा टोफू (ट्रायल)", category: "₹10 ट्रायल", price: 10, unit: "ट्रायल पैक", desc: "स्वाद चखने के लिए ₹10 ट्रायल पैक", image: PHOTO_LIBRARY.trialPack }
-    ];
-
-    const OFFERS = [
-      {
-        id: "offer-1",
-        badge: "₹21 की बचत",
-        title: "स्पेशल थाली + आंवला मुरब्बा कॉम्बो",
-        desc: "₹170 का पूरा कॉम्बो आज सिर्फ ₹149 में! घर जैसा ताज़ा खाना और प्रतापगढ़ी मुरब्बा।",
-        price: 149,
-        unit: "कॉम्बो",
-        image: PHOTO_LIBRARY.thaliSpecial
-      },
-      {
-        id: "offer-2",
-        badge: "सबसे लोकप्रिय",
-        title: "4 ट्रायल पैक महा-बचत बॉक्स",
-        desc: "मुरब्बा, सादा कैंडी, मसाला कैंडी और सोया टोफू चारों चखें सिर्फ ₹35 में।",
-        price: 35,
-        unit: "4-पैक बॉक्स",
-        image: PHOTO_LIBRARY.trialPack
-      },
-      {
-        id: "offer-3",
-        badge: "हाई प्रोटीन ऑफर",
-        title: "फिटनेस सोया टोफू पैक (400 ग्राम)",
-        desc: "200g सादा टोफू + 200g मसाला टोफू एक साथ लें ₹75 की जगह ₹65 में।",
-        price: 65,
-        unit: "400 g",
-        image: PHOTO_LIBRARY.tofuMasala
-      }
-    ];
-
-    let products = JSON.parse(localStorage.getItem("shaman_products_v2")) || DEFAULT_PRODUCTS;
-    let cart = JSON.parse(localStorage.getItem("shaman_cart_v2")) || [];
-    let selectedCategory = "सभी";
-    let isAdminLoggedIn = false;
-
-    function getFallbackPhoto(category) {
-      if (category === "थाली") return PHOTO_LIBRARY.thaliSimple;
-      if (category === "आंवला") return PHOTO_LIBRARY.murabba;
-      if (category === "सोया टोफू") return PHOTO_LIBRARY.tofuPlain;
-      if (category === "₹10 ट्रायल") return PHOTO_LIBRARY.trialPack;
-      return PHOTO_LIBRARY.thaliSimple;
-    }
-
-    function saveProducts() {
-      localStorage.setItem("shaman_products_v2", JSON.stringify(products));
-    }
-
-    function saveCart() {
-      localStorage.setItem("shaman_cart_v2", JSON.stringify(cart));
-    }
-
-    function switchTab(tabName) {
-      ["menu", "offers", "payment", "admin"].forEach(t => {
-        document.getElementById("section-" + t).classList.add("hidden");
-        const tabBtn = document.getElementById("tab-" + t);
-        if (tabBtn) tabBtn.classList.remove("tab-active");
-      });
-      document.getElementById("section-" + tabName).classList.remove("hidden");
-      const activeBtn = document.getElementById("tab-" + tabName);
-      if (activeBtn) activeBtn.classList.add("tab-active");
-
-      if (tabName === "payment") {
-        renderPaymentInfo();
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function openAdminTab() {
-      switchTab("admin");
-      if (isAdminLoggedIn) {
-        document.getElementById("adminLoginBox").classList.add("hidden");
-        document.getElementById("adminPanelBox").classList.remove("hidden");
-        renderAdminProducts();
-      } else {
-        document.getElementById("adminLoginBox").classList.remove("hidden");
-        document.getElementById("adminPanelBox").classList.add("hidden");
-      }
-    }
-
-    function loginAdmin() {
-      const pass = document.getElementById("adminPasswordInput").value.trim();
-      if (pass === ADMIN_PASSCODE) {
-        isAdminLoggedIn = true;
-        document.getElementById("adminPasswordInput").value = "";
-        openAdminTab();
-      } else {
-        alert("गलत पासवर्ड! कृपया सही एडमिन पासवर्ड दर्ज करें।");
-      }
-    }
-
-    function logoutAdmin() {
-      isAdminLoggedIn = false;
-      openAdminTab();
-    }
-
-    function renderCategories() {
-      const categories = ["सभी", "थाली", "आंवला", "सोया टोफू", "₹10 ट्रायल"];
-      const container = document.getElementById("categoryButtons");
-      container.innerHTML = categories.map(cat => {
-        const active = selectedCategory === cat;
-        return `<button onclick="selectCategory('${cat}')" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition ${
-          active
-            ? "bg-green-700 text-white border-green-700"
-            : "bg-white text-gray-700 border-gray-300 hover:border-green-600"
-        }">${cat}</button>`;
-      }).join("");
-    }
-
-    function selectCategory(cat) {
-      selectedCategory = cat;
-      renderCategories();
-      renderMenu();
-    }
-
-    function renderMenu() {
-      const search = document.getElementById("searchInput").value.trim().toLowerCase();
-      const filtered = products.filter(item => {
-        const matchCat = selectedCategory === "सभी" || item.category === selectedCategory;
-        const matchText = !search ||
-          item.name.toLowerCase
+      { id: 1, name: "सादा थाली", category: "थाली", price: 80, unit: "1 थाली", desc: "रोटी, दाल, सब्जी, चावल, सलाद, अचार", visualType: "thaliSimple" },
+      { id: 2, name
