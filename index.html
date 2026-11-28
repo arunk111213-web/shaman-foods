@@ -16,7 +16,6 @@
 </head>
 <body class="min-h-screen flex flex-col pb-44">
 
-  <!-- Header -->
   <header class="bg-green-800 text-white shadow-md sticky top-0 z-30">
     <div class="max-w-6xl mx-auto px-4 py-3">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -31,14 +30,12 @@
         </div>
       </div>
     </div>
-    <!-- Offer Banner -->
     <div class="bg-orange-600 text-white text-xs sm:text-sm py-2 px-4">
       <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <span>₹10 ट्रायल पैक उपलब्ध | ₹250 या अधिक के ऑर्डर पर मुफ़्त होम डिलीवरी (₹250 से कम पर ₹30)</span>
         <button type="button" onclick="switchTab('offers')" class="bg-white text-orange-700 font-bold px-2.5 py-1 rounded text-xs hover:bg-orange-50 transition">ऑफ़र देखें</button>
       </div>
     </div>
-    <!-- Navigation Tabs -->
     <nav class="bg-white text-gray-700 border-b border-gray-200">
       <div class="max-w-6xl mx-auto px-2 sm:px-4 flex overflow-x-auto">
         <button type="button" id="tab-menu" onclick="switchTab('menu')" class="tab-active py-3 px-4 text-sm whitespace-nowrap transition">मेनू और उत्पाद</button>
@@ -48,10 +45,7 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-8">
-
-    <!-- MENU SECTION -->
     <section id="section-menu" class="space-y-5">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <input id="searchInput" type="text" oninput="renderMenu()" placeholder="उत्पाद खोजें..." class="w-full sm:w-80 border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600" />
@@ -59,7 +53,6 @@
       <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- OFFERS SECTION -->
     <section id="section-offers" class="hidden space-y-5">
       <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
         <h2 class="text-xl font-bold text-gray-900">विशेष कॉम्बो और मौसमी ऑफ़र</h2>
@@ -68,7 +61,6 @@
       <div id="offersGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- PAYMENT SECTION -->
     <section id="section-payment" class="hidden space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center space-y-4">
@@ -92,7 +84,6 @@
       </div>
     </section>
 
-    <!-- ADMIN SECTION -->
     <section id="section-admin" class="hidden space-y-6">
       <div id="adminLoginBox" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-md mx-auto space-y-4">
         <h2 class="text-lg font-bold text-gray-900">⭐⭐⭐ एडमिन पासवर्ड दर्ज करें</h2>
@@ -127,7 +118,6 @@
       </div>
     </section>
 
-    <!-- CUSTOMER DETAILS SECTION -->
     <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-5">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-lg font-bold text-gray-900">ग्राहक विवरण और डिलीवरी पता</h2>
@@ -145,7 +135,6 @@
     </section>
   </main>
 
-  <!-- Order Confirmation Modal -->
   <div id="orderConfirmModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
@@ -160,7 +149,6 @@
     </div>
   </div>
 
-  <!-- Floating Cart Button -->
   <div class="fixed bottom-4 right-4 z-40">
     <button onclick="openCartModal()" class="relative bg-green-700 hover:bg-green-800 text-white rounded-full p-4 shadow-lg transition">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -168,7 +156,6 @@
     </button>
   </div>
 
-  <!-- Cart Modal -->
   <div id="cartModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-2xl sm:rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between">
@@ -183,356 +170,284 @@
   <div id="toastContainer" class="fixed top-20 right-4 z-[60] space-y-2"></div>
 
   <script>
-        const WHATSAPP_NUMBER = '917379551919';
-    const UPI_ID = 'arunk111213-3@oksbi';
-    const WEBSITE_URL = 'https://arunk111213-web.github.io/shaman-foods/';
-    const ADMIN_PASSWORD = 'shaman123';
+    const WHATSAPP_NUMBER = '917379551919';
+const UPI_ID = 'arunk111213-3@oksbi';
+const WEBSITE_URL = 'https://arunk111213-web.github.io/shaman-foods/';
+const ADMIN_PASSWORD = 'shaman123';
 
-    let cart = [];
-    let gpsCoords = null;
-    let adminUnlocked = false;
+let cart = [];
+let gpsCoords = null;
+let adminUnlocked = false;
 
-    // Default Products (Thali First)
-    const DEFAULT_PRODUCTS = [
-      { id: 'p1', name: 'शमन स्पेशल थाली', price: 120, unit: '1 थाली', stock: 20, category: 'Thali', desc: 'दाल, चावल, रोटी, सब्जी, सलाद, अचार', photo: null },
-      { id: 'p2', name: 'आंवला मुरब्बा', price: 199, unit: '400 g', stock: 15, category: 'Amla', desc: 'हाथ से बना, प्राकृतिक मिठास', photo: null },
-      { id: 'p3', name: 'आंवला बर्फी', price: 159, unit: '250 g', stock: 12, category: 'Amla', desc: 'आंवला बर्फी', photo: null },
-      { id: 'p4', name: 'आंवला लड्डू', price: 149, unit: '250 g', stock: 10, category: 'Amla', desc: 'आंवला लड्डू', photo: null },
-      { id: 'p5', name: 'आंवला कैंडी', price: 129, unit: '250 g', stock: 18, category: 'Amla', desc: 'मीठी आंवला कैंडी', photo: null },
-      { id: 'p6', name: 'सोया टोफू', price: 99, unit: '200 g', stock: 25, category: 'Soy Tofu', desc: 'ताज़ा सोया टोफू', photo: null },
-      { id: 'p7', name: '₹10 ट्रायल पैक', price: 10, unit: '1 पैक', stock: 100, category: 'Rs 10 Trial', desc: 'ट्रायल के लिए छोटा पैक', photo: null }
-    ];
+// ⭐ आपकी फोटो के नाम यहाँ जुड़े हैं ⭐
+const DEFAULT_PRODUCTS = [
+  { id: 'p1', name: 'शमन स्पेशल थाली', price: 120, unit: '1 थाली', stock: 20, category: 'Thali', desc: 'दाल, चावल, रोटी, सब्जी, सलाद, अचार', photo: 'special-thali.jpg' },
+  { id: 'p2', name: 'आंवला मुरब्बा', price: 199, unit: '400 g', stock: 15, category: 'Amla', desc: 'हाथ से बना, प्राकृतिक मिठास', photo: 'amla-murabba.jpg' },
+  { id: 'p3', name: 'आंवला बर्फी', price: 159, unit: '250 g', stock: 12, category: 'Amla', desc: 'आंवला बर्फी', photo: 'amla-barfi.jpg' },
+  { id: 'p4', name: 'आंवला लड्डू', price: 149, unit: '250 g', stock: 10, category: 'Amla', desc: 'आंवला लड्डू', photo: 'amla-laddu.jpg' },
+  { id: 'p5', name: 'आंवला कैंडी', price: 129, unit: '250 g', stock: 18, category: 'Amla', desc: 'मीठी आंवला कैंडी', photo: 'amla-candy.jpg' },
+  { id: 'p6', name: 'सोया टोफू', price: 99, unit: '200 g', stock: 25, category: 'Soy Tofu', desc: 'ताज़ा सोया टोफू', photo: 'masala-soy-tofu.jpg' },
+  { id: 'p7', name: '₹10 ट्रायल पैक', price: 10, unit: '1 पैक', stock: 100, category: 'Rs 10 Trial', desc: 'ट्रायल के लिए छोटा पैक', photo: 'rs10-trial-pack.jpg' }
+];
 
-    let products = JSON.parse(localStorage.getItem('shaman_products')) || DEFAULT_PRODUCTS;
+let products = JSON.parse(localStorage.getItem('shaman_products')) || DEFAULT_PRODUCTS;
 
-    // --- Helper Functions ---
-    function saveData() { localStorage.setItem('shaman_products', JSON.stringify(products)); }
-    
-    function showToast(msg) {
-      const c = document.getElementById('toastContainer');
-      const d = document.createElement('div');
-      d.className = 'bg-gray-900 text-white text-xs px-4 py-2 rounded-lg shadow-lg toast';
-      d.innerText = msg; c.appendChild(d);
-      setTimeout(() => d.remove(), 3000);
-    }
+function saveData() { localStorage.setItem('shaman_products', JSON.stringify(products)); }
 
-    function switchTab(tab) {
-      ['menu', 'offers', 'payment', 'admin'].forEach(t => {
-        document.getElementById('section-' + t).classList.add('hidden');
-        const tabBtn = document.getElementById('tab-' + t);
-        if(tabBtn) tabBtn.classList.remove('tab-active');
-      });
-      document.getElementById('section-' + tab).classList.remove('hidden');
-      const activeBtn = document.getElementById('tab-' + tab);
-      if(activeBtn) activeBtn.classList.add('tab-active');
-      
-      if(tab === 'payment') renderQrCodes();
-      if(tab === 'admin') openAdminTab();
-    }
+function showToast(msg) {
+  const c = document.getElementById('toastContainer');
+  const d = document.createElement('div');
+  d.className = 'bg-gray-900 text-white text-xs px-4 py-2 rounded-lg shadow-lg toast';
+  d.innerText = msg; c.appendChild(d);
+  setTimeout(() => d.remove(), 3000);
+}
 
-    // --- Menu & Cart Functions ---
-    function renderMenu() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const grid = document.getElementById('menuGrid');
-      grid.innerHTML = '';
-      products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).forEach(p => {
-        grid.innerHTML += `
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <div class="product-square-frame bg-gray-100 flex items-center justify-center">
-              ${p.photo ? `<img src="${p.photo}" alt="${p.name}">` : `<div class="text-gray-400 text-sm text-center p-4">📷<br>फोटो अपलोड करें</div>`}
-            </div>
-            <div class="p-4 flex-1 flex flex-col">
-              <div class="flex justify-between items-start mb-1">
-                <h3 class="font-bold text-gray-900">${p.name}</h3>
-                <span class="font-extrabold text-green-700">₹${p.price}</span>
-              </div>
-              <p class="text-xs text-gray-500 mb-2 flex-1">${p.desc} | ${p.unit}</p>
-              <div class="flex items-center gap-2 mt-auto">
-                <button onclick="addToCart('${p.id}')" class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-green-200 w-full transition">+ कार्ट में जोड़ें</button>
-              </div>
-            </div>
+function switchTab(tab) {
+  ['menu', 'offers', 'payment', 'admin'].forEach(t => {
+    document.getElementById('section-' + t).classList.add('hidden');
+    const tabBtn = document.getElementById('tab-' + t);
+    if(tabBtn) tabBtn.classList.remove('tab-active');
+  });
+  document.getElementById('section-' + tab).classList.remove('hidden');
+  const activeBtn = document.getElementById('tab-' + tab);
+  if(activeBtn) activeBtn.classList.add('tab-active');
+  
+  if(tab === 'payment') renderQrCodes();
+  if(tab === 'admin') openAdminTab();
+}
+
+function renderMenu() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = '';
+  products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).forEach(p => {
+    grid.innerHTML += `
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+        <div class="product-square-frame bg-gray-100 flex items-center justify-center">
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}">` : `<div class="text-gray-400 text-sm text-center p-4">📷<br>फोटो अपलोड करें</div>`}
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="font-bold text-gray-900">${p.name}</h3>
+            <span class="font-extrabold text-green-700">₹${p.price}</span>
           </div>
-        `;
-      });
-    }
-
-    function addToCart(id) {
-      const p = products.find(x => x.id === id);
-      const existing = cart.find(x => x.id === id);
-      if (existing) existing.qty++;
-      else cart.push({ ...p, qty: 1 });
-      updateCartUI();
-      showToast('कार्ट में जोड़ा गया!');
-    }
-
-    function updateCartUI() {
-      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-      const badge = document.getElementById('cartBadge');
-      badge.innerText = totalQty;
-      badge.classList.toggle('hidden', totalQty === 0);
-
-      const list = document.getElementById('cartItemsList');
-      const footer = document.getElementById('cartFooter');
-      list.innerHTML = '';
-      let total = 0;
-      cart.forEach(item => {
-        total += item.price * item.qty;
-        list.innerHTML += `
-          <div class="flex items-center justify-between border-b pb-2">
-            <div>
-              <p class="font-bold text-sm">${item.name}</p>
-              <p class="text-xs text-gray-500">₹${item.price} x ${item.qty}</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="changeQty('${item.id}', -1)" class="bg-gray-200 px-2 rounded">-</button>
-              <span class="text-sm font-bold">${item.qty}</span>
-              <button onclick="changeQty('${item.id}', 1)" class="bg-gray-200 px-2 rounded">+</button>
-            </div>
-          </div>
-        `;
-      });
-      let delivery = total >= 250 || total === 0 ? 0 : 30;
-      footer.innerHTML = `
-        <div class="flex justify-between text-sm"><span>सब-टोटल:</span> <span>₹${total}</span></div>
-        <div class="flex justify-between text-sm"><span>डिलीवरी:</span> <span>₹${delivery}</span></div>
-        <div class="flex justify-between font-bold text-lg text-green-800"><span>कुल:</span> <span>₹${total + delivery}</span></div>
-        <button onclick="openOrderModal()" class="w-full bg-green-700 text-white font-bold py-2 rounded-lg mt-2">ऑर्डर पूरा करें</button>
-      `;
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(x => x.id === id);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
-      updateCartUI();
-    }
-
-    function openCartModal() { document.getElementById('cartModal').classList.remove('hidden'); updateCartUI(); }
-    function closeCartModal() { document.getElementById('cartModal').classList.add('hidden'); }
-
-    // --- Order & WhatsApp Functions ---
-    function openOrderModal() {
-      const name = document.getElementById('customerName').value;
-      const phone = document.getElementById('customerPhone').value;
-      const address = document.getElementById('customerAddress').value;
-
-      if (!name || !phone || !address) {
-        showToast('कृपया नाम, फोन और पता भरें!');
-        return;
-      }
-
-      let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-      let delivery = total >= 250 ? 0 : 30;
-      
-      let summary = cart.map(i => `${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('<br>');
-      document.getElementById('orderSummaryContent').innerHTML = `
-        <p><strong>नाम:</strong> ${name}</p>
-        <p><strong>फोन:</strong> ${phone}</p>
-        <p><strong>पता:</strong> ${address}</p>
-        <hr class="my-2">
-        <div class="text-xs">${summary}</div>
-        <hr class="my-2">
-        <p class="font-bold">कुल: ₹${total + delivery} (डिलीवरी: ₹${delivery})</p>
-      `;
-      document.getElementById('orderConfirmModal').classList.remove('hidden');
-    }
-    
-    function closeOrderModal() { document.getElementById('orderConfirmModal').classList.add('hidden'); }
-
-    function confirmOrder() {
-      const name = document.getElementById('customerName').value;
-      const phone = document.getElementById('customerPhone').value;
-      const address = document.getElementById('customerAddress').value;
-      let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-      let delivery = total >= 250 ? 0 : 30;
-
-      let msg = `*SHAMAN Foods - नया ऑर्डर*\n\n`;
-      msg += `*नाम:* ${name}\n*फोन:* ${phone}\n*पता:* ${address}\n\n`;
-      msg += `*ऑर्डर विवरण:*\n`;
-      cart.forEach(i => { msg += `- ${i.name} x ${i.qty} = ₹${i.price * i.qty}\n`; });
-      msg += `\n*डिलीवरी शुल्क:* ₹${delivery}\n*कुल राशि:* ₹${total + delivery}\n\n`;
-      if (gpsCoords) msg += `*GPS लोकेशन:* https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}\n`;
-      msg += `\nकृपया पेमेंट करके स्क्रीनशॉट भेजें।`;
-
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-      
-      cart = [];
-      updateCartUI();
-      closeOrderModal();
-      closeCartModal();
-      showToast('WhatsApp पर ऑर्डर भेजा गया!');
-    }
-
-    // --- Admin Panel Functions ---
-    function openAdminTab() {
-      switchTab('admin');
-      if (adminUnlocked) {
-        document.getElementById('adminLoginBox').classList.add('hidden');
-        document.getElementById('adminPanelBox').classList.remove('hidden');
-        renderAdminPanel();
-      } else {
-        document.getElementById('adminLoginBox').classList.remove('hidden');
-        document.getElementById('adminPanelBox').classList.add('hidden');
-      }
-    }
-
-    function loginAdmin() {
-      const pass = document.getElementById('adminPasswordInput').value;
-      if (pass === ADMIN_PASSWORD) {
-        adminUnlocked = true;
-        openAdminTab();
-        showToast('स्वागत है एडमिन!');
-      } else {
-        showToast('गलत पासवर्ड!');
-      }
-    }
-
-    function logoutAdmin() {
-      adminUnlocked = false;
-      openAdminTab();
-      showToast('लॉग आउट हो गया।');
-    }
-
-    function renderAdminPanel() {
-      const list = document.getElementById('adminProductList');
-      list.innerHTML = products.map(p => `
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 gap-3">
-          <div class="flex items-center gap-3 w-full sm:w-auto">
-            <div class="w-12 h-12 rounded bg-gray-200 flex items-center justify-center overflow-hidden shrink-0">
-              ${p.photo ? `<img src="${p.photo}" class="w-full h-full object-cover">` : '📷'}
-            </div>
-            <div class="flex-1">
-              <input type="text" value="${p.name}" onchange="updateProduct('${p.id}', 'name', this.value)" class="font-bold text-sm border-b w-full focus:outline-none focus:border-green-500 bg-transparent">
-              <div class="flex gap-2 mt-1">
-                <input type="number" value="${p.price}" onchange="updateProduct('${p.id}', 'price', this.value)" class="text-xs border rounded px-1 w-16" placeholder="₹">
-                <input type="number" value="${p.stock}" onchange="updateProduct('${p.id}', 'stock', this.value)" class="text-xs border rounded px-1 w-16" placeholder="Stock">
-              </div>
-            </div>
-          </div>
-          <div class="flex gap-2 w-full sm:w-auto">
-            <label class="bg-blue-100 text-blue-800 text-xs px-3 py-2 rounded cursor-pointer font-semibold text-center flex-1 sm:flex-none">
-              फोटो बदलें
-              <input type="file" accept="image/*" class="hidden" onchange="uploadPhoto(event, '${p.id}')">
-            </label>
-            <button onclick="deleteProduct('${p.id}')" class="bg-red-100 text-red-800 text-xs px-3 py-2 rounded font-semibold">हटाएं</button>
+          <p class="text-xs text-gray-500 mb-2 flex-1">${p.desc} | ${p.unit}</p>
+          <div class="flex items-center gap-2 mt-auto">
+            <button onclick="addToCart('${p.id}')" class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-green-200 w-full transition">+ कार्ट में जोड़ें</button>
           </div>
         </div>
-      `).join('');
-    }
+      </div>
+    `;
+  });
+}
 
-    function addNewProduct() {
-      const name = document.getElementById('newName').value;
-      const price = document.getElementById('newPrice').value;
-      const unit = document.getElementById('newUnit').value;
-      const desc = document.getElementById('newDesc').value;
-      
-      if(!name || !price) return showToast('नाम और कीमत जरूरी है!');
-      
-      products.push({
-        id: 'p_' + Date.now(),
-        name: name,
-        price: Number(price),
-        unit: unit || '1',
-        stock: 10,
-        category: 'General',
-        desc: desc || '',
-        photo: null
-      });
-      saveData(); renderMenu(); renderAdminPanel(); showToast('प्रोडक्ट जोड़ा गया!');
-      document.getElementById('newName').value = '';
-      document.getElementById('newPrice').value = '';
-      document.getElementById('newUnit').value = '';
-      document.getElementById('newDesc').value = '';
-    }
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(x => x.id === id);
+  if (existing) existing.qty++;
+  else cart.push({ ...p, qty: 1 });
+  updateCartUI();
+  showToast('कार्ट में जोड़ा गया!');
+}
 
-    function updateProduct(id, field, val) {
-      const p = products.find(x => x.id === id);
-      if(p) {
-        p[field] = field === 'price' || field === 'stock' ? Number(val) : val;
-        saveData(); renderMenu();
-      }
-    }
+function updateCartUI() {
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const badge = document.getElementById('cartBadge');
+  badge.innerText = totalQty;
+  badge.classList.toggle('hidden', totalQty === 0);
+  const list = document.getElementById('cartItemsList');
+  const footer = document.getElementById('cartFooter');
+  list.innerHTML = '';
+  let total = 0;
+  cart.forEach(item => {
+    total += item.price * item.qty;
+    list.innerHTML += `
+      <div class="flex items-center justify-between border-b pb-2">
+        <div>
+          <p class="font-bold text-sm">${item.name}</p>
+          <p class="text-xs text-gray-500">₹${item.price} x ${item.qty}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="changeQty('${item.id}', -1)" class="bg-gray-200 px-2 rounded">-</button>
+          <span class="text-sm font-bold">${item.qty}</span>
+          <button onclick="changeQty('${item.id}', 1)" class="bg-gray-200 px-2 rounded">+</button>
+        </div>
+      </div>
+    `;
+  });
+  let delivery = total >= 250 || total === 0 ? 0 : 30;
+  footer.innerHTML = `
+    <div class="flex justify-between text-sm"><span>सब-टोटल:</span> <span>₹${total}</span></div>
+    <div class="flex justify-between text-sm"><span>डिलीवरी:</span> <span>₹${delivery}</span></div>
+    <div class="flex justify-between font-bold text-lg text-green-800"><span>कुल:</span> <span>₹${total + delivery}</span></div>
+    <button onclick="openOrderModal()" class="w-full bg-green-700 text-white font-bold py-2 rounded-lg mt-2">ऑर्डर पूरा करें</button>
+  `;
+}
 
-    function deleteProduct(id) {
-      if(confirm('क्या आप वाकई इस उत्पाद को हटाना चाहते हैं?')) {
-        products = products.filter(x => x.id !== id);
-        saveData(); renderMenu(); renderAdminPanel();
-        showToast('उत्पाद हटा दिया गया!');
-      }
-    }
+function changeQty(id, delta) {
+  const item = cart.find(x => x.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+}
 
-    function uploadPhoto(e, id) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const p = products.find(x => x.id === id);
-        if(p) {
-          p.photo = evt.target.result; 
-          saveData();
-          renderMenu();
-          renderAdminPanel();
-          showToast('फोटो अपलोड हो गई!');
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+function openCartModal() { document.getElementById('cartModal').classList.remove('hidden'); updateCartUI(); }
+function closeCartModal() { document.getElementById('cartModal').classList.add('hidden'); }
 
-    // --- QR & Location Functions ---
-    function renderQrCodes() {
-      const qrAmt = document.getElementById('qrAmountInput').value;
-      document.getElementById('upiQrBox').innerHTML = '';
-      new QRCode(document.getElementById('upiQrBox'), {
-        text: `upi://pay?pa=${UPI_ID}&pn=SHAMAN Foods&am=${qrAmt || ''}&cu=INR`,
-        width: 150, height: 150
-      });
-      document.getElementById('websiteQrBox').innerHTML = '';
-      new QRCode(document.getElementById('websiteQrBox'), { text: WEBSITE_URL, width: 150, height: 150 });
-    }
+function openOrderModal() {
+  const name = document.getElementById('customerName').value;
+  const phone = document.getElementById('customerPhone').value;
+  const address = document.getElementById('customerAddress').value;
+  if (!name || !phone || !address) { showToast('कृपया नाम, फोन और पता भरें!'); return; }
+  let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  let delivery = total >= 250 ? 0 : 30;
+  let summary = cart.map(i => `${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('<br>');
+  document.getElementById('orderSummaryContent').innerHTML = `
+    <p><strong>नाम:</strong> ${name}</p>
+    <p><strong>फोन:</strong> ${phone}</p>
+    <p><strong>पता:</strong> ${address}</p>
+    <hr class="my-2">
+    <div class="text-xs">${summary}</div>
+    <hr class="my-2">
+    <p class="font-bold">कुल: ₹${total + delivery} (डिलीवरी: ₹${delivery})</p>
+  `;
+  document.getElementById('orderConfirmModal').classList.remove('hidden');
+}
 
-    function copyUpiId() {
-      navigator.clipboard.writeText(UPI_ID);
-      showToast('UPI ID कॉपी हो गई!');
-    }
+function closeOrderModal() { document.getElementById('orderConfirmModal').classList.add('hidden'); }
 
-    function shareWebsiteOnWhatsApp() {
-      window.open(`https://wa.me/?text=SHAMAN Foods से ऑर्डर करें: ${WEBSITE_URL}`, '_blank');
-    }
+function confirmOrder() {
+  const name = document.getElementById('customerName').value;
+  const phone = document.getElementById('customerPhone').value;
+  const address = document.getElementById('customerAddress').value;
+  let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  let delivery = total >= 250 ? 0 : 30;
+  let msg = `*SHAMAN Foods - नया ऑर्डर*\n\n`;
+  msg += `*नाम:* ${name}\n*फोन:* ${phone}\n*पता:* ${address}\n\n`;
+  msg += `*ऑर्डर विवरण:*\n`;
+  cart.forEach(i => { msg += `- ${i.name} x ${i.qty} = ₹${i.price * i.qty}\n`; });
+  msg += `\n*डिलीवरी शुल्क:* ₹${delivery}\n*कुल राशि:* ₹${total + delivery}\n\n`;
+  if (gpsCoords) msg += `*GPS लोकेशन:* https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}\n`;
+  msg += `\nकृपया पेमेंट करके स्क्रीनशॉट भेजें।`;
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  cart = [];
+  updateCartUI();
+  closeOrderModal();
+  closeCartModal();
+  showToast('WhatsApp पर ऑर्डर भेजा गया!');
+}
 
-    function requestGPS() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            gpsCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-            document.getElementById('gpsStatusText').innerText = `GPS: ${gpsCoords.lat.toFixed(4)}, ${gpsCoords.lng.toFixed(4)}`;
-            document.getElementById('googleMapsNavLink').href = `https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}`;
-            document.getElementById('googleMapsNavLink').classList.remove('hidden');
-            showToast('GPS लोकेशन मिल गई!');
-          },
-          () => showToast('GPS अनुमति नहीं मिली।')
-        );
-      } else {
-        showToast('आपका ब्राउज़र GPS सपोर्ट नहीं करता।');
-      }
-    }
+function openAdminTab() {
+  switchTab('admin');
+  if (adminUnlocked) {
+    document.getElementById('adminLoginBox').classList.add('hidden');
+    document.getElementById('adminPanelBox').classList.remove('hidden');
+    renderAdminPanel();
+  } else {
+    document.getElementById('adminLoginBox').classList.remove('hidden');
+    document.getElementById('adminPanelBox').classList.add('hidden');
+  }
+}
 
-    function exportBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products));
-      const downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href",     dataStr);
-      downloadAnchorNode.setAttribute("download", "shaman_backup.json");
-      document.body.appendChild(downloadAnchorNode);
-      downloadAnchorNode.click();
-      downloadAnchorNode.remove();
-    }
+function loginAdmin() {
+  const pass = document.getElementById('adminPasswordInput').value;
+  if (pass === ADMIN_PASSWORD) {
+    adminUnlocked = true;
+    openAdminTab();
+    showToast('स्वागत है एडमिन!');
+  } else {
+    showToast('गलत पासवर्ड!');
+  }
+}
 
-    // --- Initialization ---
-    window.onload = () => {
+function logoutAdmin() {
+  adminUnlocked = false;
+  openAdminTab();
+  showToast('लॉग आउट हो गया।');
+}
+
+function renderAdminPanel() {
+  const list = document.getElementById('adminProductList');
+  list.innerHTML = products.map(p => `
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 gap-3">
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <div class="w-12 h-12 rounded bg-gray-200 flex items-center justify-center overflow-hidden shrink-0">
+          ${p.photo ? `<img src="${p.photo}" class="w-full h-full object-cover">` : '📷'}
+        </div>
+        <div class="flex-1">
+          <input type="text" value="${p.name}" onchange="updateProduct('${p.id}', 'name', this.value)" class="font-bold text-sm border-b w-full focus:outline-none focus:border-green-500 bg-transparent">
+          <div class="flex gap-2 mt-1">
+            <input type="number" value="${p.price}" onchange="updateProduct('${p.id}', 'price', this.value)" class="text-xs border rounded px-1 w-16" placeholder="₹">
+            <input type="number" value="${p.stock}" onchange="updateProduct('${p.id}', 'stock', this.value)" class="text-xs border rounded px-1 w-16" placeholder="Stock">
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-2 w-full sm:w-auto">
+        <label class="bg-blue-100 text-blue-800 text-xs px-3 py-2 rounded cursor-pointer font-semibold text-center flex-1 sm:flex-none">
+          फोटो बदलें
+          <input type="file" accept="image/*" class="hidden" onchange="uploadPhoto(event, '${p.id}')">
+        </label>
+        <button onclick="deleteProduct('${p.id}')" class="bg-red-100 text-red-800 text-xs px-3 py-2 rounded font-semibold">हटाएं</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addNewProduct() {
+  const name = document.getElementById('newName').value;
+  const price = document.getElementById('newPrice').value;
+  if(!name || !price) return showToast('नाम और कीमत जरूरी है!');
+  products.push({
+    id: 'p_' + Date.now(),
+    name: name,
+    price: Number(price),
+    unit: document.getElementById('newUnit').value || '1',
+    stock: 10,
+    category: 'General',
+    desc: document.getElementById('newDesc').value || '',
+    photo: null
+  });
+  saveData(); renderMenu(); renderAdminPanel(); showToast('प्रोडक्ट जोड़ा गया!');
+  document.getElementById('newName').value = '';
+  document.getElementById('newPrice').value = '';
+  document.getElementById('newUnit').value = '';
+  document.getElementById('newDesc').value = '';
+}
+
+function updateProduct(id, field, val) {
+  const p = products.find(x => x.id === id);
+  if(p) {
+    p[field] = (field === 'price' || field === 'stock') ? Number(val) : val;
+    saveData(); renderMenu();
+  }
+}
+
+function deleteProduct(id) {
+  if(confirm('क्या आप वाकई इस उत्पाद को हटाना चाहते हैं?')) {
+    products = products.filter(x => x.id !== id);
+    saveData(); renderMenu(); renderAdminPanel();
+    showToast('उत्पाद हटा दिया गया!');
+  }
+}
+
+function uploadPhoto(e, id) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const p = products.find(x => x.id === id);
+    if(p) {
+      p.photo = evt.target.result; 
+      saveData();
       renderMenu();
-      updateCartUI();
-    };
-  </script>
-</body>
-</html>
+      renderAdminPanel();
+      showToast('फोटो अपलोड हो गई!');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderQrCodes() {
+  const q
